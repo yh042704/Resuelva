@@ -1,0 +1,26 @@
+.login-wrap {
+  position: relative;
+  background: transparent;
+  border-radius: 10px;
+
+  h3 {
+    font-weight: 300;
+  }
+
+  .icon {
+    width: 80px;
+    height: 80px;
+    background: #627fd1;
+    border-radius: 50%;
+    font-size: 60px;
+    margin: 0 auto;
+    margin-bottom: 10px;
+
+    span {
+      color: white;
+      position: absolute;
+      left: 43%;
+      top: 8%;
+    }
+  }
+}

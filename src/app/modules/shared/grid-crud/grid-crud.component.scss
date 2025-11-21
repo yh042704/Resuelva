@@ -1,0 +1,16 @@
+::ng-deep .fullscreen {
+    z-index: 9999;
+    width: 94%;
+    height: 97dvh;
+    position: fixed;
+    top: 129px;
+    left: 94px;
+}
+
+::ng-deep .dx-datagrid-borders > .dx-datagrid-filter-panel {
+   background-color: white;
+}
+
+::ng-deep .dx-datagrid-borders > .dx-datagrid-header-panel {
+    background: white;
+}

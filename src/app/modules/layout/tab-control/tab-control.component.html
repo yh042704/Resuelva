@@ -1,0 +1,26 @@
+<nav mat-tab-nav-bar [tabPanel]="tabPanel">
+  @for(item of items; track item){
+  <a [attr.id]="item.uniqueCode" mat-tab-link (click)="item.command({originalEvent: $event, item: item})"
+    [active]="activeItem == item" [attr.data-fullLabel]="item.fullLabel" [pTooltip]="item.labelToolTip"
+    style="max-width: 155px">
+    <div>
+      <span [class]="item.icon"></span>
+      <span> {{ item.label }}</span>
+
+ @if(item.canClose){
+    <div class="wc-box">
+      <div [attr.id]="item.uniqueCode" (click)="onCloseTab($event, item)" class="close"></div>
+    </div>
+    }
+    </div>
+
+  </a>
+  }
+</nav>
+
+<mat-tab-nav-panel #tabPanel>
+  <section class="tab-content">
+    <!-- <ng-container *ngComponentOutlet="dynamicComponent" #containerRef></ng-container> -->
+    <ng-container #containerRef></ng-container>
+  </section>
+</mat-tab-nav-panel>

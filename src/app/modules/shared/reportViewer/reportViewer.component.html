@@ -1,0 +1,41 @@
+<div class="card">
+    <div class="surface-card shadow-2 p-3 border-round">
+        <app-skeleton-card *ngIf="!pdfLoaded"></app-skeleton-card>
+        <div [hidden]="!pdfLoaded" id="divReportContainer">
+            <div *ngIf="pdfLoaded && reportB64; else errorTemplate" id="divReportContainer">
+                    <ngx-extended-pdf-viewer
+                        [base64Src]="reportB64"
+                        backgroundColor="#ffffff"
+                        [zoom]="'page-width'"
+                        [height]="'73dvh'"
+                        [filenameForDownload]="'CustomFilename.pdf'"
+                        [handTool]="false"
+                        [showHandToolButton]="true"
+                        useBrowserLocale="true"
+                        [showOpenFileButton]="false"
+                        [showDrawEditor]="false"
+                        [showTextEditor]="false"
+                        [textLayer]="false"
+                        [showDownloadButton]="true"
+                        [showPropertiesButton]="false"
+                        [showBookModeButton]="false"
+                        [showWrappedScrollButton]="false"
+                        [showHorizontalScrollButton]="false"
+                        [showSpreadButton]="false"
+                        [showStampEditor]="false"
+                        [showHighlightEditor]="false"
+                        [showRotateCcwButton]="false"
+                        [showRotateCwButton]="false"
+                        (pdfLoaded)="pdfLoaded = true"
+                        (annotationEditorLayerRendered)="
+                            onEvent('annotationEditorLayerRendered', $event)
+                        "
+                        [disablePreferences]="true"
+                />
+            </div>
+            <ng-template #errorTemplate>
+                <p class="text-center">No se pudo cargar el reporte</p>
+            </ng-template>
+        </div>
+    </div>
+</div>

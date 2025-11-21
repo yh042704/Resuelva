@@ -1,0 +1,50 @@
+::ng-deep .dx-toolbar.dx-toolbar-multiline {
+    padding: 0 !important;
+}
+
+::ng-deep .p-sidebar-right {
+    width: 60rem !important;
+}
+
+::ng-deep .dx-fa-button.dx-fa-button-main.dx-fa-button-with-label .dx-overlay-content {
+    transform: unset !important;
+    top: 1rem !important;
+    right: 0 !important;
+    left: unset !important;
+    max-height: 37px;
+
+    &:hover .dx-fa-button-label-wrapper {
+        display: none;
+    }
+
+    &:hover .dx-fa-button-icon {
+        padding: 15px;
+    }
+
+    &:hover {
+        box-shadow: 0 0 10px 0 #3F51B5 inset, 0 0 20px 2px #3F51B5 !important;
+        border: transparent;
+        scale: 1.2;
+        translate: -3rem;
+    }
+
+    // & .dx-fa-button-label-wrapper {
+    //     display: none;
+    // }
+}
+
+@keyframes animateC {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@media screen and (max-width: 1024px) and (min-height: 768px) and (orientation:portrait) {
+    ::ng-deep .p-sidebar-right {
+        width: 100% !important;
+    }
+}
