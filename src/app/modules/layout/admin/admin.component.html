@@ -23,7 +23,7 @@
             <span class="version"> v{{ currentApplicationVersion }} </span>
           </a>
         </div> -->
-        <app-vertical-menu [menus]="menus"></app-vertical-menu>
+        <app-vertical-menu [(lockScreen)]="lockScreen" [menus]="menus"></app-vertical-menu>
       </div>
     </nav>
   </mat-drawer>
@@ -41,3 +41,9 @@
   </div>
   <!-- <app-footer></app-footer> -->
 </mat-drawer-container>
+
+@if(lockScreen){
+<div class="full-screen-background" (click)="lockScreen = false">
+  <app-clock-lock-screen style="position: fixed;top: 16%;left: 37%;"></app-clock-lock-screen>
+</div>
+}

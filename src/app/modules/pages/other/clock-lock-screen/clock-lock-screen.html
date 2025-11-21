@@ -1,0 +1,10 @@
+<div class="clock" *ngIf="clockHandsTransform$ | async as clockHandsTransform">
+  <div class="clock-face">
+    <div class="hand hour-hand" [style.transform]="clockHandsTransform.hourHandTransform"></div>
+    <div class="hand min-hand" [style.transform]="clockHandsTransform.minuteHandTransform"></div>
+    <div class="hand second-hand" [style.transform]="clockHandsTransform.secondHandTransform"></div>
+  </div>
+</div>
+<div style="width: 42%; margin: 0 auto;color: white;font-weight: 700;">
+  Dar un click para desbloquear
+</div>

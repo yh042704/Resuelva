@@ -2,11 +2,11 @@
   <app-card [showHeader]="false" cardClass="user-card" [padding]="20">
     <div class="flex align-items-center">
       <div class="flex-shrink-0">
-        <img src="assets/images/user/avatar-9.jpg" alt="user-image" class="user-avatar" />
+        <img src="assets/images/user/unnamed.png" alt="user-image" class="user-avatar" />
       </div>
       <div class="flex-grow-1 user-details">
-        <h6>Yesenia Hernandez</h6>
-        <small>Administrator</small>
+        <h6>{{ usuario?.name }}</h6>
+        <small>{{ usuario?.email }}</small>
       </div>
       <div class="user-setting">
         <a href="javascript:" [matMenuTriggerFor]="menu" class="text-muted">
@@ -16,7 +16,7 @@
         </a>
         <mat-menu #menu="matMenu" [overlapTrigger]="false" yPosition="below" xPosition="after">
           @for (list of accountList; track $index) {
-            <button mat-menu-item>
+            <button mat-menu-item (click)="list?.click($event)">
               <a href="javascript:" class="text-muted">
                 <i class="{{ list.icon }} f-18 m-r-10"></i>
                 <span class="mat-body">{{ list.title }}</span>

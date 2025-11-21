@@ -1,8 +1,5 @@
-// angular import
 import { Component, inject } from '@angular/core';
 import { Router, NavigationStart, NavigationEnd, NavigationCancel, NavigationError, RouterModule } from '@angular/router';
-
-// project import
 import { SharedModule } from './modules/shared/shared.module';
 
 @Component({
@@ -14,10 +11,8 @@ import { SharedModule } from './modules/shared/shared.module';
 export class AppComponent {
   private router = inject(Router);
 
-  // public props
   isSpinnerVisible = true;
 
-  // constructor
   constructor() {
     this.router.events.subscribe(
       (event) => {

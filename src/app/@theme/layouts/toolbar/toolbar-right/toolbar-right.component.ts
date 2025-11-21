@@ -1,17 +1,17 @@
-// angular import
-import { Component } from '@angular/core';
-
-// project import
+import { CommonModule } from '@angular/common';
+import { Component, inject, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { User } from 'src/app/core/models/api.models';
+import { AuthService } from 'src/app/core/services/auth.service';
 import { SharedModule } from 'src/app/modules/shared/shared.module';
 
 @Component({
   selector: 'app-nav-right',
-  imports: [SharedModule],
+  imports: [SharedModule, CommonModule],
   templateUrl: './toolbar-right.component.html',
   styleUrls: ['./toolbar-right.component.scss']
 })
-export class NavRightComponent {
-  // public props
+export class NavRightComponent implements OnInit {
   mainCards = [
     {
       day: 'Today',
@@ -76,4 +76,17 @@ export class NavRightComponent {
       img: 'assets/images/layout/img-announcement-4.png'
     }
   ];
+  usuario: User | null = null;
+
+  private authService: AuthService = inject(AuthService);
+  private router: Router = inject(Router);
+
+  ngOnInit(): void {
+    this.usuario = this.authService.getCurrentUser();
+  }
+
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['login']);
+  }
 }

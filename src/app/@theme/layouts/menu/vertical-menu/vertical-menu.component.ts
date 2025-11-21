@@ -1,13 +1,13 @@
-// Angular import
-import { Component, inject, input } from '@angular/core';
 import { CommonModule, Location, LocationStrategy } from '@angular/common';
-
-// project import
+import { Component, inject, input, model, NgZone, OnDestroy, OnInit } from '@angular/core';
+import { fromEvent, merge, Subject, Subscription, switchMap, tap, timer } from 'rxjs';
 import { NavigationItem } from 'src/app/@theme/types/navigation';
+import { User } from 'src/app/core/models/api.models';
+import { AuthService } from 'src/app/core/services/auth.service';
 import { SharedModule } from 'src/app/modules/shared/shared.module';
-import { MenuItemComponent } from './menu-item/menu-item.component';
 import { MenuCollapseComponent } from './menu-collapse/menu-collapse.component';
 import { MenuGroupVerticalComponent } from './menu-group/menu-group.component';
+import { MenuItemComponent } from './menu-item/menu-item.component';
 
 @Component({
   selector: 'app-vertical-menu',
@@ -15,14 +15,17 @@ import { MenuGroupVerticalComponent } from './menu-group/menu-group.component';
   templateUrl: './vertical-menu.component.html',
   styleUrls: ['./vertical-menu.component.scss']
 })
-export class VerticalMenuComponent {
+export class VerticalMenuComponent implements OnInit, OnDestroy {
   private location = inject(Location);
   private locationStrategy = inject(LocationStrategy);
 
-  // public props
   menus = input.required<NavigationItem[]>();
+  lockScreen = model<boolean>(false);
 
-  // public method
+  private idleTimeoutMs = 15 * 60 * 1000; // 15 minutos
+  public idleState: Subject<boolean> = new Subject<boolean>();
+  private activitySubscription: Subscription = new Subscription();
+
   fireOutClick() {
     let current_url = this.location.path();
     const baseHref = this.locationStrategy.getBaseHref();
@@ -55,11 +58,40 @@ export class VerticalMenuComponent {
     },
     {
       icon: 'ti ti-lock',
-      title: 'Bloquear Pantalla'
-    },
-    {
-      icon: 'ti ti-power',
-      title: 'Salir'
+      title: 'Bloquear Pantalla',
+      click: (e: any) => { this.lockScreen.set(!this.lockScreen()); }
     }
   ];
+
+  usuario: User | null = null;
+
+  private authService: AuthService = inject(AuthService);
+
+  constructor(private ngZone: NgZone) {
+    this.ngZone.runOutsideAngular(() => {
+      const activityEvents = merge(
+        fromEvent(document, 'mousemove'),
+        fromEvent(document, 'keydown'),
+        fromEvent(document, 'mousedown'),
+        fromEvent(document, 'scroll'),
+        fromEvent(document, 'touchstart'),
+        fromEvent(document, 'blur')
+      );
+
+      this.activitySubscription = activityEvents.pipe(
+        switchMap(() => {
+          return timer(this.idleTimeoutMs);
+        }),
+        tap(() => this.ngZone.run(() => this.lockScreen.set(true)))
+      ).subscribe();
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.activitySubscription.unsubscribe();
+  }
+
+  ngOnInit(): void {
+    this.usuario = this.authService.getCurrentUser();
+  }
 }

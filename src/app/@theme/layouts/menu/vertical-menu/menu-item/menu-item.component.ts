@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { NavigationItem } from 'src/app/@theme/types/navigation';
 import { LayoutService } from 'src/app/@theme/services/layout.service';
-import { TabServiceService } from 'src/app/modules/core/services/tab.service';
+import { TabServiceService } from 'src/app/core/services/tab.service';
 
 @Component({
   selector: 'app-menu-item',

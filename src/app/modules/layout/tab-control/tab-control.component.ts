@@ -11,11 +11,11 @@ import { ContextMenuModule } from 'primeng/contextmenu';
 import { TabsModule } from 'primeng/tabs';
 import { TooltipModule } from 'primeng/tooltip';
 import { Observable, catchError, exhaustMap, from } from 'rxjs';
-import { ITab, MenuSelected } from '../../core/interfaces/ITab';
-import { GeneralService } from '../../core/services/general.service';
-import { SpinnerService } from '../../core/services/spinner.service';
-import { TabServiceService } from '../../core/services/tab.service';
-import { NotificacionesService } from '../../services/notificaciones.service';
+import { ITab, MenuSelected } from '../../../core/interfaces/ITab';
+import { GeneralService } from '../../../core/services/general.service';
+import { SpinnerService } from '../../../core/services/spinner.service';
+import { TabServiceService } from '../../../core/services/tab.service';
+import { NotificacionesService } from '../../../core/services/notificaciones.service';
 
 @Injectable({
   providedIn: "root",

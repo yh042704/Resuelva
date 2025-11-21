@@ -1,8 +1,7 @@
 import { Routes } from '@angular/router';
-
-// project import
 import { AdminComponent } from './modules/layout/admin';
 import { EmptyComponent } from './modules/layout/empty';
+import { AuthGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -22,6 +21,8 @@ export const routes: Routes = [
   },
   {
     path: 'principal',
-    component: AdminComponent
-  }
+    component: AdminComponent,
+    canActivate: [AuthGuard]
+  },
+  { path: '**', redirectTo: 'login' }
 ];
