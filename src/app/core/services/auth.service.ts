@@ -27,7 +27,10 @@ export class AuthService {
       data: {
         userid: '100000',
         email: email,
-        name: 'Yesenia Hernandez',
+        name: 'Yesenia Hernández de Merino',
+        userType: 'Administrador del sistema',
+        phone: '(503) 23240481',
+        description: 'Responsable de asegurar el correcto funcionamiento, mantenimiento y seguridad de toda la infraestructura de sistemas de la compañía. El objetivo principal es garantizar la continuidad operativa y la optimización del rendimiento de todos los sistemas informáticos, tanto internos como externos',
         token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI4ODUxMWE2Mi01Zjg5LTRiMzYtYjMwNi1kMDY5NjJkMGI0OTAiLCJ1c2VybmFtZSI6ImdhYi5tZXJpbm8xMjM0NTYiLCJpYXQiOjE3NjM3MzkxMTQsImV4cCI6MTc2MzgyNTUxNH0.JP32SP7YwrqAkB7J0gbOd9_Bn-CdUd2_i3Obrn-_FPU',
         message: 'Autenticación correcta'
       }

@@ -1,0 +1,110 @@
+<div class="bg-light">
+  <div class="container py-5" style="padding-top: 1rem !important; padding-bottom: 1rem !important;max-width: unset !important;">
+    <div class="row">
+      <div class="col-12 mb-4">
+        <div class="profile-header position-relative mb-4">
+          <div class="position-absolute top-0 end-0 p-3">
+            <button class="btn btn-light"><i class="fas fa-edit me-2"></i>Modificar portada</button>
+          </div>
+        </div>
+        <div class="text-center">
+          <div class="position-relative d-inline-block">
+            <img src="assets/images/user/unnamed.png" class="rounded-circle profile-pic" alt="Profile Picture">
+            <button class="btn btn-primary btn-sm position-absolute bottom-0 end-0 rounded-circle">
+              <i class="fas fa-camera"></i>
+            </button>
+          </div>
+          <h3 class="mt-3 mb-1">{{ usuario?.name }}</h3>
+          <p class="text-muted mb-3">{{ usuario?.userType }}</p>
+          <div class="d-flex justify-content-center gap-2 mb-4">
+            <button class="btn btn-outline-primary"><i class="fas fa-envelope me-2"></i>Mensaje</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12">
+        <div class="card border-0 shadow-sm">
+          <div class="card-body p-0">
+            <div class="row g-0">
+              <div class="col-lg-12">
+                <div class="p-4">
+                  <div class="mb-4">
+                    <h5 class="mb-4">Información Personal</h5>
+                    <form [formGroup]="profileForm!">
+                      <div class="row g-3">
+                        <div class="col-md-12">
+                          <label class="form-label">Nombre</label>
+                          <input type="text" formControlName="name" class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                          <label class="form-label">Correo Electrónico</label>
+                          <input type="email" formControlName="email" class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                          <label class="form-label">Teléfono</label>
+                          <input type="tel" formControlName="phone" class="form-control">
+                        </div>
+                        <div class="col-12">
+                          <label class="form-label">Descripción</label>
+                          <textarea formControlName="description" class="form-control" rows="4"></textarea>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+
+                  <div class="row g-4 mb-4">
+                    <div class="col-md-6">
+                      <div class="settings-card card">
+                        <div class="card-body">
+                          <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                              <h6 class="mb-1">Autenticación Two-Factor</h6>
+                              <p class="text-muted mb-0 small">Agregar una capa extra de seguridad</p>
+                            </div>
+                            <div class="form-check form-switch">
+                              <input class="form-check-input" type="checkbox" checked>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="settings-card card">
+                        <div class="card-body">
+                          <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                              <h6 class="mb-1">Notificaciones por correo</h6>
+                              <p class="text-muted mb-0 small">Recibir actualizaciones de actividades</p>
+                            </div>
+                            <div class="form-check form-switch">
+                              <input class="form-check-input" type="checkbox" checked>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h5 class="mb-4">Actividades recientes</h5>
+                    <div class="activity-item mb-3">
+                      <h6 class="mb-1">Actualización de imagen de perfil</h6>
+                      <p class="text-muted small mb-0">Hace 2 horas</p>
+                    </div>
+                    <div class="activity-item mb-3">
+                      <h6 class="mb-1">Cambio de contraseña</h6>
+                      <p class="text-muted small mb-0">Ayer</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <div style="position: relative; height: 500px"> -->
+
+<!-- </div> -->

@@ -71,17 +71,17 @@
               </svg>
               Notificaciones
             </h5>
-            <mat-slide-toggle color="primary" (click)="$event.stopPropagation()"></mat-slide-toggle>
+            <mat-slide-toggle [checked]="true" color="primary" (click)="$event.stopPropagation()"></mat-slide-toggle>
           </div>
         </app-card>
         <h6 class="m-b-15">Administrar</h6>
-        <a href="javascript:" class="dropdown-item text-muted">
+        <a href="javascript:" class="dropdown-item text-muted" (click)="clickProfile($event)">
           <svg class="pc-icon m-r-10">
             <use xlink:href="assets/fonts/custom-icon.svg#custom-setting-outline"></use>
           </svg>
           <h6 class="m-b-0">Configuración</h6>
         </a>
-        <a href="javascript:" class="dropdown-item text-muted">
+        <a href="javascript:" class="dropdown-item text-muted" (click)="popupVisibleChangePassword = true">
           <svg class="pc-icon m-r-10">
             <use xlink:href="assets/fonts/custom-icon.svg#custom-lock-outline"></use>
           </svg>
@@ -102,3 +102,25 @@
     </ng-scrollbar>
   </mat-menu>
 </div>
+
+<p-dialog [(visible)]="popupVisibleChangePassword" [style]="{ width: '25rem' }">
+  <ng-template #header>
+    <div class="inline-flex items-center justify-center gap-2">
+      <p-avatar image="assets/images/user/unnamed.png" shape="circle" />
+      <span class="font-bold whitespace-nowrap">{{ usuario?.name }}</span>
+    </div>
+  </ng-template>
+  <span class="text-surface-500 dark:text-surface-400 block mb-8">Actualizar contraseña</span>
+  <div class="flex items-center gap-4 mb-4">
+    <label for="username" class="font-semibold w-24">Nueva contraseña</label>
+    <input pInputText id="username" class="flex-auto" autocomplete="off" />
+  </div>
+  <div class="flex items-center gap-4 mb-2">
+    <label for="email" class="font-semibold w-24">Confirmar contraseña</label>
+    <input pInputText id="email" class="flex-auto" autocomplete="off" />
+  </div>
+  <ng-template #footer>
+    <p-button label="Cambiar" [outlined]="true" severity="secondary" (click)="visible = false" />
+    <p-button label="Cancelar" [text]="true" severity="secondary" (click)="visible = false" />
+  </ng-template>
+</p-dialog>

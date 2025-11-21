@@ -9,6 +9,7 @@
 // @import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500&display=swap');
 
 // theme setup
+@import "~bootstrap/dist/css/bootstrap.min.css";
 @import "~devextreme/dist/css/dx.light.css";
 @import './app/@theme/styles/theme-palette-colors.scss';
 @import './app/@theme/styles/theme.scss';
@@ -33,3 +34,10 @@
 
 // grid
 @import './app/@theme/styles/grid';
+
+a:link,
+a:visited,
+a:hover,
+a:active {
+  text-decoration: none;
+}

@@ -58,7 +58,7 @@ export default class LoginComponent implements OnInit, OnDestroy {
         this.isLoading = false;
 
         if (response.success) {
-          this.snackBar.open('¡Bienvenido de nuevo!', 'Cerrar', { duration: 3000 });
+          this.snackBar.open(`¡Bienvenido al sistema ${response.data.name} !`, 'Cerrar', { duration: 5000 });
           this.router.navigate(['principal']);
         } else {
           this.snackBar.open(response.error || 'Error en el login', 'Cerrar', { duration: 5000 });

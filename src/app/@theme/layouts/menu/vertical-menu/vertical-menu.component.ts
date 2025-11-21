@@ -8,6 +8,7 @@ import { SharedModule } from 'src/app/modules/shared/shared.module';
 import { MenuCollapseComponent } from './menu-collapse/menu-collapse.component';
 import { MenuGroupVerticalComponent } from './menu-group/menu-group.component';
 import { MenuItemComponent } from './menu-item/menu-item.component';
+import { TabServiceService } from 'src/app/core/services/tab.service';
 
 @Component({
   selector: 'app-vertical-menu',
@@ -22,6 +23,7 @@ export class VerticalMenuComponent implements OnInit, OnDestroy {
   menus = input.required<NavigationItem[]>();
   lockScreen = model<boolean>(false);
 
+  private tabService = inject(TabServiceService);
   private idleTimeoutMs = 15 * 60 * 1000; // 15 minutos
   public idleState: Subject<boolean> = new Subject<boolean>();
   private activitySubscription: Subscription = new Subscription();
@@ -54,12 +56,21 @@ export class VerticalMenuComponent implements OnInit, OnDestroy {
   accountList = [
     {
       icon: 'ti ti-settings',
-      title: 'Configuración'
+      title: 'Configuración',
+      click: (e: any) => {
+        this.tabService.tabItemObservable.next({
+          code: 'profile',
+          icon: 'pi pi-user',
+          label: "Perfil de Usuario",
+          canClose: true,
+          routerLink: () => import('../../../../modules/pages/auth/profile/profile')
+        });
+      }
     },
     {
       icon: 'ti ti-lock',
       title: 'Bloquear Pantalla',
-      click: (e: any) => { this.lockScreen.set(!this.lockScreen()); }
+      click: (e: any) => this.lockScreen.set(!this.lockScreen())
     }
   ];
 

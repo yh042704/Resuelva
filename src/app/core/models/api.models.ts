@@ -1,6 +1,7 @@
 export interface User {
   userid: string;
   email: string;
+  userType: string;
   name: string;
   createdAt: string;
   exists: boolean;
