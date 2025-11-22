@@ -18,14 +18,12 @@ export class MenuItemComponent {
   private layoutService = inject(LayoutService);
   private sanitizer = inject(DomSanitizer);
 
-  // public props
   @Input() item!: NavigationItem;
 
   itemClick(event: Event) {
-    console.log(this.item);
     this.tabService.tabItemObservable.next({ code: this.item.id, icon: this.item.icon, label: this.item.title, canClose: true, routerLink: this.item.link });
   }
-  // public method
+
   toggleMenu(event: MouseEvent) {
     if (window.innerWidth < 1025) {
       this.layoutService.toggleSideDrawer();

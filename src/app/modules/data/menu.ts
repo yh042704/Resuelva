@@ -1,22 +1,6 @@
 import { Navigation } from 'src/app/@theme/types/navigation';
 
 export const menus: Navigation[] = [
-  // {
-  //   id: 'navigation',
-  //   title: 'Navigation',
-  //   type: 'group',
-  //   icon: 'icon-navigation',
-  //   children: [
-  //     {
-  //       id: 'Dashboard',
-  //       title: 'Dashboard',
-  //       type: 'item',
-  //       classes: 'nav-item',
-  //       url: '/dashboard',
-  //       icon: '#custom-status-up'
-  //     }
-  //   ]
-  // },
   {
     id: 'Reparaciones',
     title: 'Reparaciones',
@@ -24,20 +8,28 @@ export const menus: Navigation[] = [
     icon: 'icon-navigation',
     children: [
       {
-        id: 'pantalla1',
-        title: 'Pantalla 1',
+        id: 'HojaIngreso',
+        title: 'Hoja de Ingreso',
         type: 'item',
         classes: 'nav-item',
         link: () => import('../pages/application/pantalla1/pantalla1'),
-        icon: '#custom-shield'
+        icon: 'pi pi-address-book'
       },
       {
-        id: 'pantalla2',
-        title: 'Pantalla 2',
+        id: 'OrdenTrabajo',
+        title: 'Orden de Trabajo',
         type: 'item',
         classes: 'nav-item',
         link: () => import('../pages/application/pantalla2/pantalla2'),
-        icon: '#custom-password-check',
+        icon: 'pi pi-calendar-clock',
+      },
+      {
+        id: 'Aprobaciones',
+        title: 'Aprobaciones',
+        type: 'item',
+        classes: 'nav-item',
+        link: () => import('../pages/application/pantalla2/pantalla2'),
+        icon: 'pi pi-check-circle',
       }
     ]
   },
@@ -52,24 +44,82 @@ export const menus: Navigation[] = [
         title: 'Cotizaciones',
         type: 'item',
         classes: 'nav-item',
-        icon: '#custom-text-block'
+        icon: 'pi pi-list-check'
       },
       {
         id: 'compras',
         title: 'Compras',
         type: 'item',
         classes: 'nav-item',
-        icon: '#custom-text-block'
+        icon: 'pi pi-cart-plus'
       },
       {
         id: 'Ventas',
         title: 'Ventas',
         type: 'item',
         classes: 'nav-item',
-        icon: '#custom-clipboard'
+        icon: 'pi pi-chart-line'
+      },
+      {
+        id: 'MovInventario',
+        title: 'Movimientos de Inventario',
+        type: 'item',
+        classes: 'nav-item',
+        icon: 'pi pi-truck'
       }
     ]
   },
+  {
+    id: 'Catalogos',
+    title: 'Catálogos',
+    type: 'group',
+    icon: 'icon-navigation',
+    children: [
+      {
+        id: 'Clientes',
+        title: 'Clientes',
+        type: 'item',
+        classes: 'nav-item',
+        icon: 'pi pi-user'
+      },
+      {
+        id: 'Proveedores',
+        title: 'Proveedores',
+        type: 'item',
+        classes: 'nav-item',
+        icon: 'pi pi-id-card'
+      },
+      {
+        id: 'Productos',
+        title: 'Productos',
+        type: 'item',
+        classes: 'nav-item',
+        icon: 'pi pi-qrcode'
+      },
+      {
+        id: 'CatGenerales',
+        title: 'Catálogos Generales',
+        type: 'item',
+        classes: 'nav-item',
+        icon: 'pi pi-th-large'
+      }
+    ]
+  },
+  {
+    id: 'Seguridad',
+    title: 'Seguridad',
+    type: 'group',
+    icon: 'icon-navigation',
+    children: [
+      {
+        id: 'Usuarios',
+        title: 'Usuarios',
+        type: 'item',
+        classes: 'nav-item',
+        icon: 'pi pi-users'
+      }
+    ]
+  }
   // {
   //   id: 'other',
   //   title: 'Other',
