@@ -51,7 +51,7 @@
     <div class="dropdown-header flex align-item-center justify-content-between">
       <h5 class="user-title">Perfil</h5>
     </div>
-    <ng-scrollbar style="height: calc(68vh - 225px)" visibility="hover">
+    <ng-scrollbar style="height: fit-content" visibility="hover">
       <div class="dropdown-body">
         <div class="flex m-b-5">
           <div class="topic-icon">
@@ -103,22 +103,24 @@
   </mat-menu>
 </div>
 
-<p-dialog [(visible)]="popupVisibleChangePassword" [style]="{ width: '25rem' }">
+<p-dialog [(visible)]="popupVisibleChangePassword" [appendTo]="'body'" [style]="{ width: '25rem' }">
   <ng-template #header>
     <div class="inline-flex items-center justify-center gap-2">
       <p-avatar image="assets/images/user/unnamed.png" shape="circle" />
       <span class="font-bold whitespace-nowrap">{{ usuario?.name }}</span>
     </div>
   </ng-template>
-  <span class="text-surface-500 dark:text-surface-400 block mb-8">Actualizar contraseña</span>
-  <div class="flex items-center gap-4 mb-4">
-    <label for="username" class="font-semibold w-24">Nueva contraseña</label>
-    <input pInputText id="username" class="flex-auto" autocomplete="off" />
-  </div>
-  <div class="flex items-center gap-4 mb-2">
-    <label for="email" class="font-semibold w-24">Confirmar contraseña</label>
-    <input pInputText id="email" class="flex-auto" autocomplete="off" />
-  </div>
+  <br /><br />
+  <p-floatlabel style="width: 100%;">
+    <input type="password" pInputText id="password" autocomplete="off" style="width: 100%;" />
+    <label for="password">Nueva contraseña</label>
+  </p-floatlabel>
+  <br />
+  <p-floatlabel style="width: 100%">
+    <input type="password" pInputText id="passwordConfirm" autocomplete="off" style="width: 100%;" />
+    <label for="passwordConfirm">Confirmar contraseña</label>
+  </p-floatlabel>
+
   <ng-template #footer>
     <p-button label="Cambiar" [outlined]="true" severity="secondary" (click)="visible = false" />
     <p-button label="Cancelar" [text]="true" severity="secondary" (click)="visible = false" />

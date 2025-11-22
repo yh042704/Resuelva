@@ -1,18 +1,19 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AvatarModule } from 'primeng/avatar';
+import { ButtonModule } from 'primeng/button';
+import { Dialog } from 'primeng/dialog';
+import { FloatLabel } from 'primeng/floatlabel';
+import { InputTextModule } from 'primeng/inputtext';
 import { User } from 'src/app/core/models/api.models';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { TabServiceService } from 'src/app/core/services/tab.service';
 import { SharedModule } from 'src/app/modules/shared/shared.module';
-import { Dialog } from 'primeng/dialog';
-import { ButtonModule } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
-import { AvatarModule } from 'primeng/avatar';
 
 @Component({
   selector: 'app-nav-right',
-  imports: [SharedModule, CommonModule, Dialog, ButtonModule, InputTextModule, AvatarModule],
+  imports: [SharedModule, CommonModule, Dialog, ButtonModule, InputTextModule, AvatarModule, FloatLabel],
   templateUrl: './toolbar-right.component.html',
   styleUrls: ['./toolbar-right.component.scss']
 })
