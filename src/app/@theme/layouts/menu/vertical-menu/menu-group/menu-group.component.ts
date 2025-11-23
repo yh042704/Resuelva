@@ -9,6 +9,7 @@ import { MenuCollapseComponent } from '../menu-collapse/menu-collapse.component'
 
 @Component({
   selector: 'app-menu-group-vertical',
+  standalone: true,
   imports: [MenuItemComponent, MenuCollapseComponent],
   templateUrl: './menu-group.component.html',
   styleUrls: ['./menu-group.component.scss']

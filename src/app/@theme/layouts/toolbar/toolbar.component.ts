@@ -8,6 +8,7 @@ import { NavRightComponent } from './toolbar-right/toolbar-right.component';
 
 @Component({
   selector: 'app-nav-bar',
+  standalone: true,
   imports: [SharedModule, NavLeftComponent, NavRightComponent],
   templateUrl: './toolbar.component.html',
   styleUrls: ['./toolbar.component.scss']

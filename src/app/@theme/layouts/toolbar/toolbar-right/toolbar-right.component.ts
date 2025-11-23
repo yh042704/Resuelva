@@ -3,8 +3,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AvatarModule } from 'primeng/avatar';
 import { ButtonModule } from 'primeng/button';
-import { Dialog } from 'primeng/dialog';
-import { FloatLabel } from 'primeng/floatlabel';
+import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { User } from 'src/app/core/models/api.models';
 import { AuthService } from 'src/app/core/services/auth.service';
@@ -13,7 +12,8 @@ import { SharedModule } from 'src/app/modules/shared/shared.module';
 
 @Component({
   selector: 'app-nav-right',
-  imports: [SharedModule, CommonModule, Dialog, ButtonModule, InputTextModule, AvatarModule, FloatLabel],
+  standalone: true,
+  imports: [SharedModule, CommonModule, DialogModule, ButtonModule, InputTextModule, AvatarModule],
   templateUrl: './toolbar-right.component.html',
   styleUrls: ['./toolbar-right.component.scss']
 })

@@ -12,6 +12,7 @@ import { TabServiceService } from 'src/app/core/services/tab.service';
 
 @Component({
   selector: 'app-vertical-menu',
+  standalone: true,
   imports: [SharedModule, MenuItemComponent, MenuCollapseComponent, MenuGroupVerticalComponent, CommonModule],
   templateUrl: './vertical-menu.component.html',
   styleUrls: ['./vertical-menu.component.scss']

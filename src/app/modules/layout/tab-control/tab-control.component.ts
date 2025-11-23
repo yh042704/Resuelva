@@ -8,7 +8,6 @@ import { confirm } from 'devextreme/ui/dialog';
 import { MenuItem } from "primeng/api";
 import { ButtonModule } from 'primeng/button';
 import { ContextMenuModule } from 'primeng/contextmenu';
-import { TabsModule } from 'primeng/tabs';
 import { TooltipModule } from 'primeng/tooltip';
 import { Observable, catchError, exhaustMap, from } from 'rxjs';
 import { ITab, MenuSelected } from '../../../core/interfaces/ITab';
@@ -23,7 +22,7 @@ import { NotificacionesService } from '../../../core/services/notificaciones.ser
 @Component({
   selector: 'app-tabcontrol',
   standalone: true,
-  imports: [TabsModule, ButtonModule, TooltipModule, CommonModule, ContextMenuModule, MatTabsModule],
+  imports: [ButtonModule, TooltipModule, CommonModule, ContextMenuModule, MatTabsModule],
   templateUrl: './tab-control.component.html',
   styleUrl: './tab-control.component.scss'
 })

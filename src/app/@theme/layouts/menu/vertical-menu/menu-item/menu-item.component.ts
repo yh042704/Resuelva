@@ -8,6 +8,7 @@ import { TabServiceService } from 'src/app/core/services/tab.service';
 
 @Component({
   selector: 'app-menu-item',
+  standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './menu-item.component.html',
   styleUrls: ['./menu-item.component.scss']

@@ -7,6 +7,7 @@ import { SharedModule } from 'src/app/modules/shared/shared.module';
 
 @Component({
   selector: 'app-nav-left',
+  standalone: true,
   imports: [SharedModule],
   templateUrl: './toolbar-left.component.html',
   styleUrls: ['./toolbar-left.component.scss']

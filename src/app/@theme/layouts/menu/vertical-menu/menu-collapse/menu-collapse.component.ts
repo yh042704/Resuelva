@@ -1,14 +1,12 @@
-// Angular import
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-
-// project import
 import { NavigationItem } from 'src/app/@theme/types/navigation';
 import { MenuItemComponent } from '../menu-item/menu-item.component';
 
 @Component({
   selector: 'app-menu-collapse',
+  standalone: true,
   imports: [MenuItemComponent, RouterModule, CommonModule],
   templateUrl: './menu-collapse.component.html',
   styleUrls: ['./menu-collapse.component.scss']

@@ -2,15 +2,10 @@ import { CommonModule, DOCUMENT } from '@angular/common';
 import { HttpParams } from '@angular/common/http';
 import { Component, EnvironmentInjector, EventEmitter, Inject, Input, OnDestroy, OnInit, Output, Signal, TemplateRef, effect, inject, model, output, runInInjectionContext, viewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { gridParamCrud } from '@core/models/interfaces/gridParamCrud';
-import { GeneralService } from '@core/services/general.service';
-import { TabServiceService } from '@core/services/tab.service';
-import { NotificacionesService } from '@services/notificaciones.service';
-import { SkeletonComponent } from '@shared/skeleton/skeleton.component';
 import {
-    DxButtonGroupModule, DxButtonModule, DxDataGridComponent, DxDataGridModule, DxDropDownButtonModule,
-    DxFormModule, DxLoadPanelModule, DxResizableModule, DxSelectBoxModule,
-    DxToolbarComponent, DxToolbarModule
+  DxButtonGroupModule, DxButtonModule, DxDataGridComponent, DxDataGridModule, DxDropDownButtonModule,
+  DxFormModule, DxLoadPanelModule, DxResizableModule, DxSelectBoxModule,
+  DxToolbarComponent, DxToolbarModule
 } from 'devextreme-angular';
 import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
 import { LoadOptions } from 'devextreme/data';
@@ -20,8 +15,13 @@ import ODataStore from 'devextreme/data/odata/store';
 import dxForm from 'devextreme/ui/form';
 import _ from 'lodash';
 import { Subject, catchError, exhaustMap, firstValueFrom } from 'rxjs';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../environments/environment';
+import { gridParamCrud } from '../../../core/interfaces/gridParamCrud';
+import { GeneralService } from '../../../core/services/general.service';
+import { NotificacionesService } from '../../../core/services/notificaciones.service';
+import { TabServiceService } from '../../../core/services/tab.service';
 import { changeStatusEditButton } from '../../shared/options';
+import { SkeletonComponent } from '../skeleton/skeleton.component';
 import { Dispatch, GenerateOptionsMenu, basicRulesetToODataFilter, convertOData } from './options';
 
 @Component({

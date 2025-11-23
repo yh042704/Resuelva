@@ -12,8 +12,8 @@ export const menus: Navigation[] = [
         title: 'Hoja de Ingreso',
         type: 'item',
         classes: 'nav-item',
-        link: () => import('../pages/application/pantalla1/pantalla1'),
-        icon: 'pi pi-address-book'
+        link: () => import('../pages/application/hoja-ingreso/hoja-ingreso'),
+        icon: 'pi pi-book'
       },
       {
         id: 'OrdenTrabajo',
@@ -21,7 +21,7 @@ export const menus: Navigation[] = [
         type: 'item',
         classes: 'nav-item',
         link: () => import('../pages/application/pantalla2/pantalla2'),
-        icon: 'pi pi-calendar-clock',
+        icon: 'pi pi-briefcase',
       },
       {
         id: 'Aprobaciones',
@@ -44,7 +44,7 @@ export const menus: Navigation[] = [
         title: 'Cotizaciones',
         type: 'item',
         classes: 'nav-item',
-        icon: 'pi pi-list-check'
+        icon: 'pi pi-money-bill'
       },
       {
         id: 'compras',
