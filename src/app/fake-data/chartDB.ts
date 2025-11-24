@@ -130,16 +130,16 @@ export class ChartDB {
     },
     series: [
       {
-        name: 'Income',
+        name: 'Ventas',
         data: [20, 70, 40, 70, 70, 90, 50, 55, 45, 60, 50, 65]
       },
       {
-        name: 'Expense',
+        name: 'Reparaciones',
         data: [10, 40, 20, 40, 50, 70, 80, 30, 15, 32, 90, 30]
       }
     ],
     xaxis: {
-      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+      categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
       axisBorder: {
         show: false
       },

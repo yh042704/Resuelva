@@ -14,7 +14,7 @@
   </button>
   <mat-menu #Notification="matMenu" xPosition="before" class="dropdown-notification">
     <div class="dropdown-header flex align-item-center justify-content-between">
-      <h5 class="m-b-0">Notification</h5>
+      <h5 class="m-b-0">Notificaciones</h5>
       <a href="javascript:" class="mat-body text-primary-500">Marcar como leído</a>
     </div>
     <ng-scrollbar style="height: calc(100vh - 215px)" visibility="hover">
@@ -33,12 +33,12 @@
               <span class="mat-small float-end text-muted">{{ card.time }}</span>
               <h5 class="m-b-10">{{ card.position }}</h5>
               <p class="m-b-0 mat-body">{{ card.description }}</p>
-              @if (card.status === true) {
+              <!-- @if (card.status === true) {
               <div class="m-t-10">
                 <button mat-stroked-button class="m-r-10">Decline</button>
                 <button mat-flat-button color="primary">Accept</button>
               </div>
-              }
+              } -->
             </div>
           </div>
         </app-card>
@@ -103,26 +103,38 @@
   </mat-menu>
 </div>
 
-<p-dialog [(visible)]="popupVisibleChangePassword" [appendTo]="'body'" [style]="{ width: '25rem' }">
-  <ng-template #header>
-    <div class="inline-flex items-center justify-center gap-2">
-      <p-avatar image="assets/images/user/unnamed.png" shape="circle" />
-      <span class="font-bold whitespace-nowrap">{{ usuario?.name }}</span>
+<p-dialog [(visible)]="popupVisibleChangePassword" [appendTo]="'body'"
+  style="width: '25rem';">
+  <ng-template pTemplate="headless">
+    <div class="flex flex-column px-8 py-5 gap-4"
+      style="border-radius: 12px; background-image: radial-gradient(circle at left top, var(--primary-400), var(--primary-700));
+       box-shadow: 0px 0px 47px 0px rgb(61, 85, 85);">
+      <div class="text-center">
+        <div class="topic-icon">
+          <img src="assets/images/user/unnamed.png" alt="user-images" class="user-avatar" />
+        </div>
+        <span class="font-bold whitespace-nowrap">{{ usuario?.name }}</span>
+      </div>
+
+
+      <div class="inline-flex flex-column gap-2">
+        <label for="password" class="text-primary-50 font-semibold">Nueva contraseña</label>
+        <input pInputText id="password" class="bg-white-alpha-20 border-none p-3 text-primary-50" type="password" />
+      </div>
+      <div class="inline-flex flex-column gap-2">
+        <label for="passwordConfirm" class="text-primary-50 font-semibold">Confirmar contraseña</label>
+        <input pInputText id="passwordConfirm" class="bg-white-alpha-20 border-none p-3 text-primary-50"
+          type="password" />
+      </div>
+      <div class="flex align-items-center gap-2">
+        <p-button label="Cambiar" (onClick)="closeDialog()" [text]="true"
+          styleClass="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"
+          class="w-full" />
+        <p-button label="Cancelar" (onClick)="closeDialog()" [text]="true"
+          styleClass="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"
+          class="w-full" />
+      </div>
     </div>
   </ng-template>
   <br /><br />
-  <!-- <p-floatlabel style="width: 100%;">
-    <input type="password" pInputText id="password" autocomplete="off" style="width: 100%;" />
-    <label for="password">Nueva contraseña</label>
-  </p-floatlabel>
-  <br />
-  <p-floatlabel style="width: 100%">
-    <input type="password" pInputText id="passwordConfirm" autocomplete="off" style="width: 100%;" />
-    <label for="passwordConfirm">Confirmar contraseña</label>
-  </p-floatlabel> -->
-
-  <ng-template #footer>
-    <p-button label="Cambiar" [outlined]="true" severity="secondary" (click)="visible = false" />
-    <p-button label="Cancelar" [text]="true" severity="secondary" (click)="visible = false" />
-  </ng-template>
 </p-dialog>

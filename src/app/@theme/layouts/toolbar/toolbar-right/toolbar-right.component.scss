@@ -86,6 +86,7 @@
     }
   }
 }
+
 ::ng-deep.user-account-card {
   background-image: url('../../../../../assets/images/layout/img-profile-card.jpg');
 }
@@ -135,4 +136,9 @@
       min-width: 350px !important;
     }
   }
+}
+
+::ng-deep .p-dialog {
+  opacity: 0.9;
+  border-radius: 20px
 }

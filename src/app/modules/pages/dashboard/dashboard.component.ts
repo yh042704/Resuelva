@@ -1,12 +1,7 @@
-// angular import
 import { Component, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-// project import
 import { SharedModule } from 'src/app/modules/shared/shared.module';
 import { ChartDB } from 'src/app/fake-data/chartDB';
-
-// third party
 import { ApexOptions, ChartComponent, NgApexchartsModule } from 'ng-apexcharts';
 
 @Component({
@@ -17,7 +12,6 @@ import { ApexOptions, ChartComponent, NgApexchartsModule } from 'ng-apexcharts';
   styleUrls: ['./dashboard.component.scss']
 })
 export default class DashboardComponent {
-  // public props
   chart = viewChild<ChartComponent>('chart');
   earningChart: Partial<ApexOptions>;
   pageViewChart: Partial<ApexOptions>;
@@ -28,10 +22,8 @@ export default class DashboardComponent {
   pendingTasksChart: Partial<ApexOptions>;
   totalIncomeChart: Partial<ApexOptions>;
 
-  // eslint-disable-next-line
   chartDB: any;
 
-  // graph color change with theme color mode change
   preset = ['#4680FF'];
   monthlyColor = ['#4680FF', '#8996a4'];
   incomeColors = ['#4680FF', '#E58A00', '#2CA87F', '#b5ccff'];
@@ -59,7 +51,6 @@ export default class DashboardComponent {
     this.totalIncomeChart = totalIncomeChart;
   }
 
-  // public method
   project = [
     {
       title: 'Invoice Generator'

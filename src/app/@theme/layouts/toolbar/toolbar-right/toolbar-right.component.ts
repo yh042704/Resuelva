@@ -20,11 +20,11 @@ import { SharedModule } from 'src/app/modules/shared/shared.module';
 export class NavRightComponent implements OnInit {
   mainCards = [
     {
-      day: 'Today',
+      day: 'Hoy',
       cards: [
         {
           icon: 'custom-layer',
-          time: '2 min ago',
+          time: 'hace 2 minutos',
           position: 'UI/UX Design',
           description:
             "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley oftype and scrambled it to make a type",
@@ -32,7 +32,7 @@ export class NavRightComponent implements OnInit {
         },
         {
           icon: 'custom-sms',
-          time: '1 hour ago',
+          time: 'hace 1 hora',
           position: 'Message',
           description: "Lorem Ipsum has been the industry's standard dummy text ever since the 1500.",
           status: false
@@ -40,11 +40,11 @@ export class NavRightComponent implements OnInit {
       ]
     },
     {
-      day: 'Yesterday',
+      day: 'Ayer',
       cards: [
         {
           icon: 'custom-document-text',
-          time: '12 hour ago',
+          time: 'hace 12 horas',
           position: 'Forms',
           description:
             "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley oftype and scrambled it to make a type",
@@ -52,14 +52,14 @@ export class NavRightComponent implements OnInit {
         },
         {
           icon: 'custom-security-safe',
-          time: '18 hour ago',
+          time: 'hace 18 horas',
           position: 'Security',
           description: "Lorem Ipsum has been the industry's standard dummy text ever since the 1500.",
           status: false
         },
         {
           icon: 'custom-user-bold',
-          time: '15 hour ago',
+          time: 'hace 15 horas',
           position: 'Challenge invitation',
           description: 'Jonny aber invites to join the challenge',
           status: true
@@ -89,13 +89,8 @@ export class NavRightComponent implements OnInit {
   private tabService = inject(TabServiceService);
   private authService: AuthService = inject(AuthService);
 
-  changePasswordButtonOptions?: Record<string, unknown> = {
-    icon: 'check',
-    stylingMode: 'contained',
-    text: 'Cambiar contraseña',
-    onClick: () => {
-      this.popupVisibleChangePassword = true;
-    }
+  closeDialog() {
+    this.popupVisibleChangePassword = false;
   }
 
   ngOnInit(): void {
