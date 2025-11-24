@@ -18,7 +18,13 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "allowedCommonJsDependencies": [
-              "apexcharts"
+              "apexcharts",
+              "devexpress-diagram",
+              "devexpress-gantt",
+              "devextreme-quill",
+              "jszip",
+              "sweetalert2",
+              "lodash"
             ],
             "outputPath": "dist",
             "index": "src/index.html",
