@@ -82,17 +82,8 @@ body {
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
-}
-
-html,
-body {
-  height: 100%;
-}
-
-body {
-  margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-  font-size: small !important;
+  font-size: 14px !important;
+  overflow: hidden;
 }
 
 a,
@@ -115,10 +106,22 @@ body .mat-mdc-card {
   font-size: unset !important;
 }
 
-span.mat-mdc-menu-item-text, .p-tabview-title, .dx-form-group-caption {
-  font-size:small !important;
+span.mat-mdc-menu-item-text,
+.p-tabview-title,
+.dx-form-group-caption,
+h6 {
+  font-size: 14px !important;
 }
 
 .mdc-notched-outline__leading {
-    width: unset !important;
+  width: unset !important;
+}
+
+.p-tabmenu-nav {
+  margin-bottom: unset !important;
+  padding-left: unset !important;
+}
+
+.p-tabview-nav {
+  padding-left: unset !important;
 }
