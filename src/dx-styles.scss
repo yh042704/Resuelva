@@ -115,6 +115,10 @@ body .mat-mdc-card {
   font-size: unset !important;
 }
 
-span.mat-mdc-menu-item-text {
+span.mat-mdc-menu-item-text, .p-tabview-title, .dx-form-group-caption {
   font-size:small !important;
+}
+
+.mdc-notched-outline__leading {
+    width: unset !important;
 }
