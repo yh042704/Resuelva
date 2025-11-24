@@ -1,4 +1,4 @@
-<nav mat-tab-nav-bar [tabPanel]="tabPanel">
+<!-- <nav mat-tab-nav-bar [tabPanel]="tabPanel">
   @for(item of items; track item){
   <a [attr.id]="item.uniqueCode" mat-tab-link (click)="item.command({originalEvent: $event, item: item})"
     [active]="activeItem == item" [attr.data-fullLabel]="item.fullLabel" [pTooltip]="item.labelToolTip"
@@ -20,7 +20,46 @@
 
 <mat-tab-nav-panel #tabPanel>
   <section class="tab-content">
-    <!-- <ng-container *ngComponentOutlet="dynamicComponent" #containerRef></ng-container> -->
+    <ng-container *ngComponentOutlet="dynamicComponent" #containerRef></ng-container>
     <ng-container #containerRef></ng-container>
   </section>
-</mat-tab-nav-panel>
+</mat-tab-nav-panel> -->
+
+
+<br />
+
+@if(menuChanged){
+<p-tabMenu #menuItems [scrollable]="true" [model]="items" [activeItem]="activeItem">
+    <ng-template pTemplate="item" let-item>
+        <a [attr.id]="item.uniqueCode" class="p-menuitem-link flex justify-content-between align-items-center p-3"
+            [attr.data-fullLabel]="item.fullLabel" [pTooltip]="item.labelToolTip" style="max-width: 235px">
+            <div>
+                <span [class]="item.icon"></span>
+                <span> {{ item.label }}</span>
+            </div>
+            @if(item.canClose){
+            <div class="wc-box">
+                <div [attr.id]="item.uniqueCode" (click)="onCloseTab($event, item)" class="close"></div>
+            </div>
+            }
+        </a>
+    </ng-template>
+</p-tabMenu>
+}@else {
+<p-tabMenu #menuItems [scrollable]="true" [model]="items" disabled>
+    <ng-template pTemplate="item" let-item>
+        <a class="p-menuitem-link flex justify-content-between align-items-center p-3"
+            [attr.data-fullLabel]="item.fullLabel" [pTooltip]="item.fullLabel" style="max-width: 235px;">
+            <div>
+                <span [class]="item.icon"></span>
+                <span> {{ item.label }}</span>
+            </div>
+        </a>
+    </ng-template>
+</p-tabMenu>
+}
+
+<section class="tab-content">
+    <!-- <ng-container *ngComponentOutlet="dynamicComponent" #containerRef></ng-container> -->
+    <ng-container #containerRef></ng-container>
+</section>

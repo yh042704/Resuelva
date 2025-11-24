@@ -1,259 +1,252 @@
 <div id="effectComponent" [ngClass]="fullScreen ? 'fullscreen' : ''" class="effect-component">
-    @if (NoPageComponent() == 0 && customArrayDatasource === undefined) {
+  @if (NoPageComponent() == 0 && customArrayDatasource === undefined) {
+  <div class="widget-container">
+    <div style="height: 56px;"></div>
+    <div class="surface-card shadow-2 p-3 border-round">
+      <app-skeleton></app-skeleton>
+    </div>
+  </div>
+  }
+
+  @if(showGrid){
+  <div [hidden]="NoPageComponent() > 1 || (NoPageComponent() == 0 && gridParamCrud.showButtonNew)">
+    @if(!isReadOnly){
+    @if(!gridParamCrud.showButtonNew && !gridParamCrud.showButtonRefresh && gridParamCrud.columnsRecords.length >
+    0 && gridParamCrud.key === ''){
     <div class="widget-container">
-        <div style="height: 56px;"></div>
-        <div class="surface-card shadow-2 p-3 border-round">
-            <app-skeleton></app-skeleton>
-        </div>
+      <dx-resizable class="resizable-container" [minWidth]="500" [minHeight]="150" [maxHeight]="370" handles="right"
+        area=".widget-container">
+        <dx-toolbar id="toolbarGrid" #toolbarGrid [multiline]="true">
+          <dxi-item location="before" widget="dxButton">
+            <div *dxTemplate>
+              <dx-button icon="plus" hint="Nuevo" (onClick)="onClickButtonOptions($event)"></dx-button>
+            </div>
+          </dxi-item>
+
+          @if(gridParamCrud.expandGrid){
+          <dxi-item location="before" widget="dxButton">
+            <div *dxTemplate>
+              <dx-button icon="filter" hint="Filtrar" (onClick)="onButtonClick('filter')"></dx-button>
+            </div>
+          </dxi-item>
+
+          <dxi-item location="before" locateInMenu="auto" menuItemTemplate="menuSeparatorTemplate">
+            <div *dxTemplate>
+              <div class="toolbar-separator"></div>
+            </div>
+          </dxi-item>
+
+          <dxi-item location="before" locateInMenu="auto" menuItemTemplate="menuSeparatorTemplate">
+            <div *dxTemplate>
+              <div class="toolbar-separator"></div>
+            </div>
+          </dxi-item>
+
+          <dxi-item location="before" widget="dxButton">
+            <div *dxTemplate>
+              <dx-button [icon]="fullScreen ? 'close' : 'expandform'" hint="Expandir"
+                (onClick)="onClickButtonFullScreen($event)"></dx-button>
+            </div>
+          </dxi-item>
+          }
+        </dx-toolbar>
+      </dx-resizable>
     </div>
     }
+    }
+    @if(gridParamCrud.showButtonNew || gridParamCrud.showButtonRefresh || gridParamCrud.columnsRecords.length ===
+    0){
+    <div class="widget-container">
+      <dx-resizable class="resizable-container" [minWidth]="500" [minHeight]="150" [maxHeight]="370" handles="right"
+        area=".widget-container">
+        <dx-toolbar id="toolbarGrid" #toolbarGrid [multiline]="true">
+          <dxi-item location="before" widget="dxButton" [visible]="gridParamCrud.showButtonRefresh">
+            <div *dxTemplate>
+              <dx-button icon="refresh" hint="Actualizar" (onClick)="onButtonClick('refresh', $event)"></dx-button>
+            </div>
+          </dxi-item>
 
-    @if(showGrid){
-    <div [hidden]="NoPageComponent() > 1 || (NoPageComponent() == 0 && gridParamCrud.showButtonNew)">
-        @if(!isReadOnly){
-        @if(!gridParamCrud.showButtonNew && !gridParamCrud.showButtonRefresh && gridParamCrud.columnsRecords.length >
-        0 && gridParamCrud.key === ''){
-        <div class="widget-container">
-            <dx-resizable class="resizable-container" [minWidth]="500" [minHeight]="150" [maxHeight]="370"
-                handles="right" area=".widget-container">
-                <dx-toolbar id="toolbarGrid" #toolbarGrid [multiline]="true">
-                    <dxi-item location="before" widget="dxButton">
-                        <div *dxTemplate>
-                            <dx-button icon="plus" hint="Nuevo" (onClick)="onClickButtonOptions($event)"></dx-button>
-                        </div>
-                    </dxi-item>
+          <dxi-item location="before" widget="dxButton" [visible]="gridParamCrud.showButtonNew">
+            <div *dxTemplate>
+              <dx-button icon="add" hint="Nuevo" (onClick)="onButtonClick('add')"></dx-button>
+            </div>
+          </dxi-item>
 
-                    @if(gridParamCrud.expandGrid){
-                    <dxi-item location="before" widget="dxButton">
-                        <div *dxTemplate>
-                            <dx-button icon="filter" hint="Filtrar" (onClick)="onButtonClick('filter')"></dx-button>
-                        </div>
-                    </dxi-item>
+          <dxi-item location="before" locateInMenu="auto" menuItemTemplate="menuSeparatorTemplate">
+            <div *dxTemplate>
+              <div class="toolbar-separator"></div>
+            </div>
+          </dxi-item>
 
-                    <dxi-item location="before" locateInMenu="auto" menuItemTemplate="menuSeparatorTemplate">
-                        <div *dxTemplate>
-                            <div class="toolbar-separator"></div>
-                        </div>
-                    </dxi-item>
+          <dxi-item location="before" locateInMenu="auto" menuItemTemplate="menuSeparatorTemplate">
+            <div *dxTemplate>
+              <div class="toolbar-separator"></div>
+            </div>
+          </dxi-item>
 
-                    <dxi-item location="before" locateInMenu="auto" menuItemTemplate="menuSeparatorTemplate">
-                        <div *dxTemplate>
-                            <div class="toolbar-separator"></div>
-                        </div>
-                    </dxi-item>
+          <dxi-item location="before" widget="dxButton">
+            <div *dxTemplate>
+              <dx-button icon="filter" hint="Filtrar" (onClick)="onButtonClick('filter')"></dx-button>
+            </div>
+          </dxi-item>
 
-                    <dxi-item location="before" widget="dxButton">
-                        <div *dxTemplate>
-                            <dx-button [icon]="fullScreen ? 'close' : 'expandform'" hint="Expandir"
-                                (onClick)="onClickButtonFullScreen($event)"></dx-button>
-                        </div>
-                    </dxi-item>
-                    }
-                </dx-toolbar>
-            </dx-resizable>
-        </div>
-        }
-        }
-        @if(gridParamCrud.showButtonNew || gridParamCrud.showButtonRefresh || gridParamCrud.columnsRecords.length ===
-        0){
-        <div class="widget-container">
-            <dx-resizable class="resizable-container" [minWidth]="500" [minHeight]="150" [maxHeight]="370"
-                handles="right" area=".widget-container">
-                <dx-toolbar id="toolbarGrid" #toolbarGrid [multiline]="true">
-                    <dxi-item location="before" widget="dxButton" [visible]="gridParamCrud.showButtonRefresh">
-                        <div *dxTemplate>
-                            <dx-button icon="refresh" hint="Actualizar"
-                                (onClick)="onButtonClick('refresh', $event)"></dx-button>
-                        </div>
-                    </dxi-item>
+          <dxi-item location="before" widget="dxButton" [visible]="(customQueryDatasource ?? []).length === 0">
+            <div *dxTemplate>
+              <dx-button icon="clearformat" hint="Limpiar Filtros" (onClick)="onButtonClick('Clearfilter')"></dx-button>
+            </div>
+          </dxi-item>
 
-                    <dxi-item location="before" widget="dxButton" [visible]="gridParamCrud.showButtonNew">
-                        <div *dxTemplate>
-                            <dx-button icon="add" hint="Nuevo" (onClick)="onButtonClick('add')"></dx-button>
-                        </div>
-                    </dxi-item>
+          <dxi-item location="before" widget="dxButton">
+            <div *dxTemplate>
+              <dx-button icon="columnchooser" hint="Seleccionar columnas"
+                (onClick)="onButtonClick('columnchooser')"></dx-button>
+            </div>
+          </dxi-item>
 
-                    <dxi-item location="before" locateInMenu="auto" menuItemTemplate="menuSeparatorTemplate">
-                        <div *dxTemplate>
-                            <div class="toolbar-separator"></div>
-                        </div>
-                    </dxi-item>
+          <dxi-item location="before" widget="dxButton">
+            <div *dxTemplate>
+              <dx-button icon="exportxlsx" hint="Exportar a Excel" (onClick)="onButtonClick('exportxlsx')"></dx-button>
+            </div>
+          </dxi-item>
 
-                    <dxi-item location="before" locateInMenu="auto" menuItemTemplate="menuSeparatorTemplate">
-                        <div *dxTemplate>
-                            <div class="toolbar-separator"></div>
-                        </div>
-                    </dxi-item>
-
-                    <dxi-item location="before" widget="dxButton">
-                        <div *dxTemplate>
-                            <dx-button icon="filter" hint="Filtrar" (onClick)="onButtonClick('filter')"></dx-button>
-                        </div>
-                    </dxi-item>
-
-                    <dxi-item location="before" widget="dxButton"
-                        [visible]="(customQueryDatasource ?? []).length === 0">
-                        <div *dxTemplate>
-                            <dx-button icon="clearformat" hint="Limpiar Filtros"
-                                (onClick)="onButtonClick('Clearfilter')"></dx-button>
-                        </div>
-                    </dxi-item>
-
-                    <dxi-item location="before" widget="dxButton">
-                        <div *dxTemplate>
-                            <dx-button icon="columnchooser" hint="Seleccionar columnas"
-                                (onClick)="onButtonClick('columnchooser')"></dx-button>
-                        </div>
-                    </dxi-item>
-
-                    <dxi-item location="before" widget="dxButton">
-                        <div *dxTemplate>
-                            <dx-button icon="exportxlsx" hint="Exportar a Excel"
-                                (onClick)="onButtonClick('exportxlsx')"></dx-button>
-                        </div>
-                    </dxi-item>
-
-                    <!-- <dxi-item location="before" widget="dxButton">
+          <!-- <dxi-item location="before" widget="dxButton">
                         <div *dxTemplate>
                             <dx-button icon="exportpdf" (onClick)="onButtonClick('exportpdf')"></dx-button>
                         </div>
                     </dxi-item> -->
 
-                    <dxi-item location="before" locateInMenu="auto" menuItemTemplate="menuSeparatorTemplate">
-                        <div *dxTemplate>
-                            <div class="toolbar-separator"></div>
-                        </div>
-                    </dxi-item>
+          <dxi-item location="before" locateInMenu="auto" menuItemTemplate="menuSeparatorTemplate">
+            <div *dxTemplate>
+              <div class="toolbar-separator"></div>
+            </div>
+          </dxi-item>
 
-                    <dxi-item location="before" locateInMenu="auto" menuItemTemplate="menuSeparatorTemplate">
-                        <div *dxTemplate>
-                            <div class="toolbar-separator"></div>
-                        </div>
-                    </dxi-item>
+          <dxi-item location="before" locateInMenu="auto" menuItemTemplate="menuSeparatorTemplate">
+            <div *dxTemplate>
+              <div class="toolbar-separator"></div>
+            </div>
+          </dxi-item>
 
-                    <!-- <dxi-item location="after" widget="dxButton" showText="inMenu">
+          <!-- <dxi-item location="after" widget="dxButton" showText="inMenu">
                     <div *dxTemplate>
                         <dx-button icon="attach" text="Attach" (onClick)="onButtonClick('Attach')"></dx-button>
                     </div>
                 </dxi-item> -->
 
-                    <dxi-item location="before" widget="dxButton">
-                        <div *dxTemplate>
-                            <dx-button icon="help" hint="Ayuda" (onClick)="onButtonClick('About')"></dx-button>
-                        </div>
-                    </dxi-item>
-                </dx-toolbar>
-            </dx-resizable>
-        </div>
-        }
-
-        @defer {
-        <ng-content #nameContent>
-        </ng-content>
-
-        <dx-data-grid id='dgCrud' [dataSource]="dataSource" [allowColumnReordering]="true" [renderAsync]="true"
-            [rowAlternationEnabled]="true" [columnAutoWidth]="gridParamCrud.pageSize !== 0" [showBorders]="true"
-            [wordWrapEnabled]="gridParamCrud.pageSize !== 0" [summary]="summary"
-            [columnHidingEnabled]="gridParamCrud.pageSize > 0" [allowColumnResizing]="true"
-            [syncLookupFilterValues]="false"
-            [columnAutoWidth]="gridParamCrud.pageSize === 0 && gridParamCrud.columnsRecords.length === 0"
-            [columns]="gridParamCrud.columnsRecords.length == 0 ? null : gridParamCrud.columnsRecords"
-            (onRowUpdating)="onRowUpdating($event)" [remoteOperations]="customArrayDatasource() === undefined"
-            (onInitNewRow)="onInitNewRow($event)" [cacheEnabled]="customArrayDatasource() === undefined"
-            (onEditorPreparing)="onEditorPreparing($event)" [style.height]="heightGrid + 'dvh !important'"
-            style="width: 100% !important;" (onInitialized)="onInitialized($event)"
-            (onRowPrepared)="onRowPrepared($event)" (onCellClick)="onCellClick($event)">
-            <!-- <dxo-state-storing [enabled]="true" type="localStorage" [storageKey]="gridParamCrud.key"></dxo-state-storing> -->
-            @if(customArrayDatasource() === undefined){
-            <dxo-scrolling [preloadEnabled]="true" mode="virtual" rowRenderingMode="virtual"></dxo-scrolling>
-            }
-
-            <dxo-header-filter [visible]="gridParamCrud.headerVisible"></dxo-header-filter>
-            <dxo-paging [enabled]="true"
-                [pageSize]="(gridParamCrud.pageSize === 0 && gridParamCrud.columnsRecords.length === 0) || gridParamCrud.pageSize === -1 ? 20 : gridParamCrud.pageSize"
-                [(pageIndex)]="pageIndex"></dxo-paging>
-            <dxo-pager [visible]="gridParamCrud.pagerVisible ?? true" [showPageSizeSelector]="false"
-                [showNavigationButtons]="true"> </dxo-pager>
-            @if(!isReadOnly){
-            <dxo-editing mode="cell"
-                [allowUpdating]="customArrayDatasource() !== undefined && gridParamCrud.showButtonEdit"
-                [allowAdding]="false"
-                [allowDeleting]="customArrayDatasource() !== undefined && gridParamCrud.showButtonRemove">
-                <dxo-texts confirmDeleteMessage="¿Está seguro que desea eliminar el registro?"></dxo-texts>
-            </dxo-editing>
-            }
-            <dxo-filter-row [visible]="false"></dxo-filter-row>
-            <dxo-filter-panel [visible]="true"></dxo-filter-panel>
-            @if(gridParamCrud.expandGrid){
-            <dxo-grouping [autoExpandAll]="false"></dxo-grouping>
-            <dxo-group-panel [visible]="true"></dxo-group-panel>
-            }
-            <!-- <dxo-search-panel [visible]="true"></dxo-search-panel> -->
-            <dxo-selection mode="single"></dxo-selection>
-        </dx-data-grid>
-        }@placeholder{
-        <app-skeleton></app-skeleton>
-        }
+          <dxi-item location="before" widget="dxButton">
+            <div *dxTemplate>
+              <dx-button icon="help" hint="Ayuda" (onClick)="onButtonClick('About')"></dx-button>
+            </div>
+          </dxi-item>
+        </dx-toolbar>
+      </dx-resizable>
     </div>
     }
 
-    <div [hidden]="NoPageComponent() !== 2" id="divEditFormContainer">
-        <div id="divEditFormContainerBlockPanel">
-            @if(gridParamCrud.showButtonNew || gridParamCrud.showButtonRefresh){
-            <div class="widget-container" id="divToolbarEdit"
-                style="top: 55px!important; opacity: 0.95;z-index: 100!important;position:sticky;">
-                <dx-resizable class="resizable-container" [minWidth]="500" [minHeight]="150" [maxHeight]="370"
-                    handles="right" area=".widget-container">
-                    <dx-toolbar #toolbarEdit [multiline]="true" style="border-radius: 1rem!important;">
-                        <dxi-item location="before" widget="dxButton">
-                            <div *dxTemplate>
-                                <dx-button icon="revert" [disabled]="disabledCancelEdit" hint="Regresar"
-                                    (onClick)="onButtonClick('cancel')"></dx-button>
-                            </div>
-                        </dxi-item>
+    @defer {
+    <ng-content #nameContent>
+    </ng-content>
 
-                        <dxi-item location="before" widget="dxButton">
-                            <div *dxTemplate>
-                                <dx-button id="btnSave" icon="save" hint="Guardar"
-                                    (onClick)="onButtonClick('save', $event)" [visible]="!isReadOnly"></dx-button>
-                            </div>
-                        </dxi-item>
+    <dx-data-grid id='dgCrud' [dataSource]="dataSource" [allowColumnReordering]="true" [renderAsync]="true"
+      [rowAlternationEnabled]="true" [columnAutoWidth]="gridParamCrud.pageSize !== 0" [showBorders]="true"
+      [wordWrapEnabled]="gridParamCrud.pageSize !== 0" [summary]="summary"
+      [columnHidingEnabled]="gridParamCrud.pageSize > 0" [allowColumnResizing]="true" [syncLookupFilterValues]="false"
+      [columnAutoWidth]="gridParamCrud.pageSize === 0 && gridParamCrud.columnsRecords.length === 0"
+      [columns]="gridParamCrud.columnsRecords.length == 0 ? null : gridParamCrud.columnsRecords"
+      (onRowUpdating)="onRowUpdating($event)" [remoteOperations]="customArrayDatasource() === undefined"
+      (onInitNewRow)="onInitNewRow($event)" [cacheEnabled]="customArrayDatasource() === undefined"
+      (onEditorPreparing)="onEditorPreparing($event)" [style.height]="heightGrid + 'dvh !important'"
+      style="width: 100% !important;" (onInitialized)="onInitialized($event)" (onRowPrepared)="onRowPrepared($event)"
+      (onCellClick)="onCellClick($event)">
+      <!-- <dxo-state-storing [enabled]="true" type="localStorage" [storageKey]="gridParamCrud.key"></dxo-state-storing> -->
+      @if(customArrayDatasource() === undefined){
+      <dxo-scrolling [preloadEnabled]="true" mode="virtual" rowRenderingMode="virtual"></dxo-scrolling>
+      }
 
-                        <dxi-item location="before" locateInMenu="auto" menuItemTemplate="menuSeparatorTemplate">
-                            <div *dxTemplate>
-                                <div class="toolbar-separator"></div>
-                            </div>
-                        </dxi-item>
+      <dxo-header-filter [visible]="gridParamCrud.headerVisible"></dxo-header-filter>
+      <dxo-paging [enabled]="true"
+        [pageSize]="(gridParamCrud.pageSize === 0 && gridParamCrud.columnsRecords.length === 0) || gridParamCrud.pageSize === -1 ? 20 : gridParamCrud.pageSize"
+        [(pageIndex)]="pageIndex"></dxo-paging>
+      <dxo-pager [visible]="gridParamCrud.pagerVisible ?? true" [showPageSizeSelector]="false"
+        [showNavigationButtons]="true"> </dxo-pager>
+      @if(!isReadOnly){
+      <dxo-editing mode="cell" [allowUpdating]="customArrayDatasource() !== undefined && gridParamCrud.showButtonEdit"
+        [allowAdding]="false" [allowDeleting]="customArrayDatasource() !== undefined && gridParamCrud.showButtonRemove">
+        <dxo-texts confirmDeleteMessage="¿Está seguro que desea eliminar el registro?"></dxo-texts>
+      </dxo-editing>
+      }
+      <dxo-filter-row [visible]="false"></dxo-filter-row>
+      <dxo-filter-panel [visible]="true"></dxo-filter-panel>
+      @if(gridParamCrud.expandGrid){
+      <dxo-grouping [autoExpandAll]="false"></dxo-grouping>
+      <dxo-group-panel [visible]="true"></dxo-group-panel>
+      }
+      <!-- <dxo-search-panel [visible]="true"></dxo-search-panel> -->
+      <dxo-selection mode="single"></dxo-selection>
+    </dx-data-grid>
+    }@placeholder{
+    <app-skeleton></app-skeleton>
+    }
+  </div>
+  }
 
-                        <dxi-item location="before" locateInMenu="auto" menuItemTemplate="menuSeparatorTemplate">
-                            <div *dxTemplate>
-                                <div class="toolbar-separator"></div>
-                            </div>
-                        </dxi-item>
-                    </dx-toolbar>
-                </dx-resizable>
-            </div>
-            }@else {
-            <br />
-            }
+  <div [hidden]="NoPageComponent() !== 2" id="divEditFormContainer">
+    <div id="divEditFormContainerBlockPanel">
+      @if(gridParamCrud.showButtonNew || gridParamCrud.showButtonRefresh){
+      <div class="widget-container" id="divToolbarEdit"
+        style="top: 55px!important; opacity: 0.95;z-index: 100!important;position:sticky;">
+        <dx-resizable class="resizable-container" [minWidth]="500" [minHeight]="150" [maxHeight]="370" handles="right"
+          area=".widget-container">
+          <dx-toolbar #toolbarEdit [multiline]="true" style="border-radius: 1rem!important;">
+            <dxi-item location="before" widget="dxButton">
+              <div *dxTemplate>
+                <dx-button icon="revert" [disabled]="disabledCancelEdit" hint="Regresar"
+                  (onClick)="onButtonClick('cancel')"></dx-button>
+              </div>
+            </dxi-item>
 
-            <div #editData id="form-container" class="surface-card shadow-2 p-3 border-round">
-                @defer (on viewport) {
-                <ng-container
-                    *ngTemplateOutlet="editFormsTemplate || defaultEditFormsTemplate; context:{$implicit: selectedRecord}">
-                </ng-container>
-                }@placeholder{
-                <app-skeleton></app-skeleton>
-                }
-            </div>
-        </div>
+            <dxi-item location="before" widget="dxButton">
+              <div *dxTemplate>
+                <dx-button id="btnSave" icon="save" hint="Guardar" (onClick)="onButtonClick('save', $event)"
+                  [visible]="!isReadOnly"></dx-button>
+              </div>
+            </dxi-item>
+
+            <dxi-item location="before" locateInMenu="auto" menuItemTemplate="menuSeparatorTemplate">
+              <div *dxTemplate>
+                <div class="toolbar-separator"></div>
+              </div>
+            </dxi-item>
+
+            <dxi-item location="before" locateInMenu="auto" menuItemTemplate="menuSeparatorTemplate">
+              <div *dxTemplate>
+                <div class="toolbar-separator"></div>
+              </div>
+            </dxi-item>
+          </dx-toolbar>
+        </dx-resizable>
+      </div>
+      }@else {
+      <br />
+      }
+
+      <div #editData id="form-container" class="surface-card shadow-2 p-3 border-round">
+        @defer (on viewport) {
+        <ng-container
+          *ngTemplateOutlet="editFormsTemplate || defaultEditFormsTemplate; context:{$implicit: selectedRecord}">
+        </ng-container>
+        }@placeholder{
+        <app-skeleton></app-skeleton>
+        }
+      </div>
     </div>
+  </div>
 
-    <ng-template #defaultEditFormsTemplate let-selectedRecord>
-        <dx-form id='formEdit' [formData]="selectedRecord" [colCount]="2" [labelMode]="'floating'">
-        </dx-form>
-    </ng-template>
-    <!--
+  <ng-template #defaultEditFormsTemplate let-selectedRecord>
+    <dx-form id='formEdit' [formData]="selectedRecord" [colCount]="2" [labelMode]="'floating'">
+    </dx-form>
+  </ng-template>
+  <!--
     <ng-content #nameContent>
 
     </ng-content> -->
@@ -261,15 +254,15 @@
 </div>
 
 <dx-load-panel id="dxLoadPanel" #loadPanel shadingColor="rgba(0,0,0,0.4)"
-    [position]="{ of: '#divEditFormContainerBlockPanel' }" [(visible)]="loadingVisible" [showIndicator]="true"
-    [showPane]="true" [shading]="true" [hideOnOutsideClick]="false">
-    --(onShown)="onShown()" (onHidden)="onHidden()"
+  [position]="{ of: '#divEditFormContainerBlockPanel' }" [(visible)]="loadingVisible" [showIndicator]="true"
+  [showPane]="true" [shading]="true" [hideOnOutsideClick]="false">
+  --(onShown)="onShown()" (onHidden)="onHidden()"
 </dx-load-panel>
 
 <dx-load-panel #loadPanelExport shadingColor="rgba(0,0,0,0.4)" [position]="{ of: '#dgCrud' }"
-    [(visible)]="loadingVisibleExport" [showIndicator]="true" [showPane]="true" [shading]="true"
-    [hideOnOutsideClick]="false">
-    --(onShown)="onShown()" (onHidden)="onHidden()"
+  [(visible)]="loadingVisibleExport" [showIndicator]="true" [showPane]="true" [shading]="true"
+  [hideOnOutsideClick]="false">
+  --(onShown)="onShown()" (onHidden)="onHidden()"
 </dx-load-panel>
 
 <div id="divVisible" style="visibility:hidden;"></div>

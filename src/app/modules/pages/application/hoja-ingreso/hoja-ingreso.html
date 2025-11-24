@@ -1,1 +1,42 @@
-<p>hoja-ingreso works!</p>
+<app-grid-crud [gridParamCrud]="parametros" [openEditNewTab]="false" [editFormsTemplate]="appEditForms"
+  (toolbarEditEvent)="handleEventEditToolbar($event)">
+</app-grid-crud>
+
+<ng-template #appEditForms let-selectedRecord>
+  <p-tabView [(activeIndex)]="activeIndex">
+    <p-tabPanel header="Datos Generales">
+      <dx-form id='formEdit' [formData]="selectedRecord" [labelMode]="'static'">
+        <dxi-item itemType="group" [colCount]="3">
+          <dxi-item [label]="{text:'Nombre de Procedimiento Almacenado'}" dataField="storeProcedureName">
+            <dxi-validation-rule type="required" message="Nombre de Procedimiento Almacenado es requerido">
+            </dxi-validation-rule>
+          </dxi-item>
+          <dxi-item [label]="{text:'Fecha de última validación'}" editorType="dxDateBox"
+            [editorOptions]="{readOnly: true, type: 'datetime', displayFormat: 'dd/MMM/yyyy hh:mm aa'}"
+            dataField="lastValidateActions">
+          </dxi-item>
+          <dxi-item [label]="{text:'Fecha de última compilación'}" editorType="dxDateBox"
+            [editorOptions]="{readOnly: true, type: 'datetime', displayFormat: 'dd/MMM/yyyy hh:mm aa'}"
+            dataField="lastCompileActions">
+          </dxi-item>
+        </dxi-item>
+        <dxi-item itemType="group" caption="Detalle" [colSpan]="3">
+          @if(selectedRecord){
+          <dxi-item>
+            <div *dxTemplate style="margin-top: -10px !important;">
+              <app-hoja-ingreso-detalle [(surveyDetalleTemplate)]="selectedRecord.hojaEquiposDetalles">
+              </app-hoja-ingreso-detalle>
+            </div>
+          </dxi-item>
+          }
+        </dxi-item>
+      </dx-form>
+    </p-tabPanel>
+    <p-tabPanel header="Hallazgo" [disabled]="true">
+    </p-tabPanel>
+    <p-tabPanel header="Pruebas" [disabled]="true">
+    </p-tabPanel>
+    <p-tabPanel header="Recomendaciones" [disabled]="true">
+    </p-tabPanel>
+  </p-tabView>
+</ng-template>

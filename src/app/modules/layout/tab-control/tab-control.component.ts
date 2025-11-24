@@ -15,6 +15,7 @@ import { GeneralService } from '../../../core/services/general.service';
 import { SpinnerService } from '../../../core/services/spinner.service';
 import { TabServiceService } from '../../../core/services/tab.service';
 import { NotificacionesService } from '../../../core/services/notificaciones.service';
+import { TabMenuModule } from 'primeng/tabmenu';
 
 @Injectable({
   providedIn: "root",
@@ -22,7 +23,7 @@ import { NotificacionesService } from '../../../core/services/notificaciones.ser
 @Component({
   selector: 'app-tabcontrol',
   standalone: true,
-  imports: [ButtonModule, TooltipModule, CommonModule, ContextMenuModule, MatTabsModule],
+  imports: [TabMenuModule, ButtonModule, TooltipModule, CommonModule, ContextMenuModule],
   templateUrl: './tab-control.component.html',
   styleUrl: './tab-control.component.scss'
 })

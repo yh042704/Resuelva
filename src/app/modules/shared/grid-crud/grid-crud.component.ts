@@ -80,7 +80,7 @@ export default class GridCrudComponent implements OnInit, OnDestroy {
     private searchByID$: Subject<[string, HttpParams]> = new Subject<[string, HttpParams]>();
 
     heightGrid: string = '75';
-    showGrid: boolean = false;
+    showGrid: boolean = true;
     fullScreen: boolean = false;
     buttonsAction = {
         type: 'buttons',
