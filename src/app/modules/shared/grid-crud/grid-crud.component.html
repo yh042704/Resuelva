@@ -148,10 +148,9 @@
     </ng-content>
 
     <dx-data-grid id='dgCrud' [dataSource]="dataSource" [allowColumnReordering]="true" [renderAsync]="true"
-      [rowAlternationEnabled]="true" [columnAutoWidth]="gridParamCrud.pageSize !== 0" [showBorders]="true"
+      [rowAlternationEnabled]="true" [columnAutoWidth]="gridParamCrud?.autowidth ?? true" [showBorders]="true"
       [wordWrapEnabled]="gridParamCrud.pageSize !== 0" [summary]="summary"
-      [columnHidingEnabled]="gridParamCrud.pageSize > 0" [allowColumnResizing]="true" [syncLookupFilterValues]="false"
-      [columnAutoWidth]="gridParamCrud.pageSize === 0 && gridParamCrud.columnsRecords.length === 0"
+      [columnHidingEnabled]="gridParamCrud?.autowidth ?? true" [allowColumnResizing]="true" [syncLookupFilterValues]="false"
       [columns]="gridParamCrud.columnsRecords.length == 0 ? null : gridParamCrud.columnsRecords"
       (onRowUpdating)="onRowUpdating($event)" [remoteOperations]="customArrayDatasource() === undefined"
       (onInitNewRow)="onInitNewRow($event)" [cacheEnabled]="customArrayDatasource() === undefined"

@@ -28,7 +28,7 @@ export const menus: Navigation[] = [
         title: 'Aprobaciones',
         type: 'item',
         classes: 'nav-item',
-        link: () => import('../pages/application/pantalla2/pantalla2'),
+        link: () => import('../pages/application/aprobaciones/aprobaciones.component'),
         icon: 'pi pi-check-circle',
       }
     ]
@@ -65,6 +65,7 @@ export const menus: Navigation[] = [
         title: 'Movimientos de Inventario',
         type: 'item',
         classes: 'nav-item',
+        link: () => import('../pages/application/movimientos-inventario/movimientos-inventario.component'),
         icon: 'pi pi-truck'
       }
     ]
@@ -80,6 +81,7 @@ export const menus: Navigation[] = [
         title: 'Clientes',
         type: 'item',
         classes: 'nav-item',
+        link: () => import('../pages/application/clientes/clientes.component'),
         icon: 'pi pi-user'
       },
       {
@@ -87,6 +89,7 @@ export const menus: Navigation[] = [
         title: 'Proveedores',
         type: 'item',
         classes: 'nav-item',
+        link: () => import('../pages/application/proveedores/proveedores.component'),
         icon: 'pi pi-id-card'
       },
       {
@@ -101,6 +104,7 @@ export const menus: Navigation[] = [
         title: 'Catálogos Generales',
         type: 'item',
         classes: 'nav-item',
+        link: () => import('../pages/application/catalogos-generales/catalogos-generales.component'),
         icon: 'pi pi-th-large'
       }
     ]

@@ -1,0 +1,40 @@
+<app-grid-crud [gridParamCrud]="parametros" [openEditNewTab]="false" [editFormsTemplate]="appEditForms">
+</app-grid-crud>
+
+<ng-template #appEditForms let-selectedRecord>
+  <dx-form id='formEdit' [formData]="selectedRecord" [labelMode]="'static'">
+    <dxi-item itemType="group" [colCount]="3">
+      <dxi-item [label]="{text:'Tabla'}" dataField="nombreTabla">
+        <dxi-validation-rule type="required" message="Nombre de tabla es requerida">
+        </dxi-validation-rule>
+        <dxo-editor-options [maxLength]="200"></dxo-editor-options>
+      </dxi-item>
+
+      <dxi-item [label]="{text:'Posicion'}" dataField="posicion" editorType="dxNumberBox"
+        [editorOptions]="{showSpinButtons: true, mode: 'number', format: '#0', min: 0}">
+      </dxi-item>
+
+      <dxi-item [label]="{text:'Descripción'}" dataField="descripcion" [colSpan]="3">
+        <dxi-validation-rule type="required" message="Descripción es requerido">
+        </dxi-validation-rule>
+        <dxo-editor-options [maxLength]="200"></dxo-editor-options>
+      </dxi-item>
+
+      <dxi-item [label]="{text:'Valor1'}" dataField="valor1" editorType="dxNumberBox"
+        [editorOptions]="{showSpinButtons: true, mode: 'number', format: '#0', min: 0}">
+      </dxi-item>
+
+      <dxi-item [label]="{text:'Valor2'}" dataField="valor2" editorType="dxNumberBox"
+        [editorOptions]="{showSpinButtons: true, mode: 'number', step: '0.01', min: 0}">
+      </dxi-item>
+
+      <dxi-item [label]="{text:'Valor3'}" dataField="valor3">
+        <dxo-editor-options [maxLength]="400"></dxo-editor-options>
+      </dxi-item>
+
+      <dxi-item [label]="{text:'Etiqueta'}" dataField="etiqueta">
+        <dxo-editor-options [maxLength]="400"></dxo-editor-options>
+      </dxi-item>
+    </dxi-item>
+  </dx-form>
+</ng-template>

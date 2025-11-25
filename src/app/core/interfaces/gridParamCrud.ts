@@ -7,6 +7,7 @@ export interface gridParamCrud {
     reloadEditDataByKey: boolean,
     QuerySelectAll: boolean;
     createUrl: string;
+    autowidth?: boolean;
     viewData?: viewData;
     updateUrl: string;
     deleteUrl: string;
