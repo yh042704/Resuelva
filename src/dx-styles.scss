@@ -139,5 +139,15 @@ h6 {
 
 .dx-form-group-with-caption>.dx-form-group-content {
   padding-top: unset !important;
-  ;
+}
+
+.dx-button.dx-button-has-icon:not(.dx-button-has-text):not(.dx-shape-standard) {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .24) !important;
+
+  &:hover {
+    box-shadow: 0 0 10px 0 #3F51B5 inset, 0 0 20px 2px #3F51B5 !important;
+    border: transparent;
+    scale: 1.2;
+    z-index: 9999;
+  }
 }

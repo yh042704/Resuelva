@@ -3,9 +3,10 @@
 </app-grid-crud>
 
 <ng-template #appEditForms let-selectedRecord>
+  @if(menuChanged){
   <p-tabView [(activeIndex)]="activeIndex">
     <p-tabPanel header="Datos Generales">
-      <dx-form id='formEdit' [formData]="selectedRecord" [labelMode]="'static'">
+      <dx-form id="formEdit" [formData]="selectedRecord" [labelMode]="'static'">
         <dxi-item itemType="group" [colCount]="4">
           <dxi-item [label]="{text:'Cliente'}" dataField="clientesId" editorType="dxSelectBox" [colSpan]="2"
             [editorOptions]="{ dataSource: dsClientes, showClearButton: true, displayExpr: displayExprTemplate, valueExpr: 'clientesId',
@@ -35,7 +36,7 @@
         <dxi-item itemType="group" caption="Detalle" [colSpan]="3">
           @if(selectedRecord){
           <dxi-item>
-            <div *dxTemplate style="margin-top: -10px !important;">
+            <div *dxTemplate style="margin-top: -10px !important">
               <app-hoja-ingreso-detalle [hojaIngresoId]="selectedRecord.hojaIngresoId" [(activeIndex)]="activeIndex"
                 [(selectedRecord)]="selectedRecordDetails"
                 [(surveyDetalleTemplate)]="selectedRecord.hojaIngresoEquipoDetalles">
@@ -48,8 +49,8 @@
     </p-tabPanel>
     <p-tabPanel header="Hallazgo" [disabled]="true">
       <br />
-      @if(selectedRecordDetails && activeIndex === 1){
-      Tipo Hardware: <b>{{selectedRecordDetails.descripTipoHardware}}</b>, Marca:
+      @if(selectedRecordDetails && activeIndex === 1){ Tipo Hardware:
+      <b>{{selectedRecordDetails.descripTipoHardware}}</b>, Marca:
       <b>{{selectedRecordDetails.marca}}</b>, Modelo:
       <b>{{selectedRecordDetails.modelo}}</b>
       <br />
@@ -114,8 +115,8 @@
     </p-tabPanel>
     <p-tabPanel header="Pruebas" [disabled]="true">
       <br />
-      @if(selectedRecordDetails && activeIndex === 2){
-      Tipo Hardware: <b>{{selectedRecordDetails.descripTipoHardware}}</b>, Marca:
+      @if(selectedRecordDetails && activeIndex === 2){ Tipo Hardware:
+      <b>{{selectedRecordDetails.descripTipoHardware}}</b>, Marca:
       <b>{{selectedRecordDetails.marca}}</b>, Modelo:
       <b>{{selectedRecordDetails.modelo}}</b>
       <br />
@@ -180,8 +181,8 @@
     </p-tabPanel>
     <p-tabPanel header="Recomendaciones" [disabled]="true">
       <br />
-      @if(selectedRecordDetails && activeIndex === 3){
-      Tipo Hardware: <b>{{selectedRecordDetails.descripTipoHardware}}</b>, Marca:
+      @if(selectedRecordDetails && activeIndex === 3){ Tipo Hardware:
+      <b>{{selectedRecordDetails.descripTipoHardware}}</b>, Marca:
       <b>{{selectedRecordDetails.marca}}</b>, Modelo:
       <b>{{selectedRecordDetails.modelo}}</b>
       <br />
@@ -245,9 +246,65 @@
       </dx-html-editor>
       }
     </p-tabPanel>
+    @if(activeIndex === 4){
+    <p-tabPanel header="Cotizaciones">
+      <app-cotizaciones [(indexTab)]="activeIndex" [hojaIngresoId]="selectedRecord.hojaIngresoId"></app-cotizaciones>
+    </p-tabPanel>
+    }
   </p-tabView>
+  }
 </ng-template>
 
-<div style="display: none;">
-  <dx-select-box id='selectBoxSample'></dx-select-box>
+@if(loadingVisibleCotizacion){
+<dx-popup [showTitle]="true" title="Crear Cotización" [dragEnabled]="true" [hideOnOutsideClick]="false"
+  [showCloseButton]="true" container=".dx-viewport" [(visible)]="loadingVisibleCotizacion"
+  contentTemplate="popup-content">
+  <div *dxTemplate="let data of 'popup-content'">
+    <div id="cotizacion">
+      <div class="card" style="height: 66vh!important;">
+        <div class="card-header">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-3">
+                <dx-select-box placeholder="Seleccione el hardware" [items]="selectedRecord?.hojaIngresoEquipoDetalles"
+                  displayExpr="name" valueExpr="hojaIngresoEquipoDetalleId" [showClearButton]="true"
+                  (onValueChanged)="onValueReportChanged($event)"
+                  style="width: 100%; max-width: 325px;"></dx-select-box>
+              </div>
+              <div class="col-md-3">
+                <dx-select-box placeholder="Seleccione un impuesto" [items]="tipoImpuesto" displayExpr="descripcion"
+                  valueExpr="catalogosId" [showClearButton]="true" (onValueChanged)="onValueReportChanged($event)"
+                  style="width: 100%; max-width: 325px;"></dx-select-box>
+              </div>
+              <div class="col-md-3">
+                <dx-select-box placeholder="Seleccione validez" [items]="validez" displayExpr="descripcion"
+                  valueExpr="catalogosId" [showClearButton]="true" (onValueChanged)="onValueReportChanged($event)"
+                  style="width: 100%; max-width: 325px;"></dx-select-box>
+              </div>
+              <div class="col-md-3">
+                <dx-button icon="check" type="success" text="Crear" (onClick)="renderReport()">
+                </dx-button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <app-cotizaciones-detalle [cotizacionId]="0" [tipoImpuestoId]="selectedTipoImpuesto?.catalogosId"
+            [(surveyDetalleTemplate)]="cotizacionDetalle">
+          </app-cotizaciones-detalle>
+        </div>
+      </div>
+    </div>
+  </div>
+  <dxo-position at="center" my="center" collision="fit"></dxo-position>
+</dx-popup>
+
+<dx-load-panel id="loadingVisibleProcessCotizacion" shadingColor="rgba(0,0,0,0.4)" [position]="{ of: '#cotizacion' }"
+  [(visible)]="loadingVisibleProcessCotizacion" [showIndicator]="true" [showPane]="true" [shading]="true"
+  [hideOnOutsideClick]="false">
+</dx-load-panel>
+}
+
+<div style="display: none">
+  <dx-select-box id="selectBoxSample"></dx-select-box>
 </div>

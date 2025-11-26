@@ -170,6 +170,21 @@ export class GeneralService {
     })
   }
 
+  async GetCarboneReport(reportBase64: string, reportCode: string, data: any) {
+
+    return fetch(environment.apiReport, {
+      method: "POST",
+      body: JSON.stringify({ reportBase64: reportBase64, reportCode: reportCode, data: data }),
+      headers: { "Content-type": "application/json; charset=UTF-8", responseType: 'text' },
+    }).then((response) => response.text())
+      .then((dataResponse) => {
+        if (dataResponse.includes('ECONNREFUSED'))
+          return Promise.reject('Servidor de reportes no está iniciado...')
+        else
+          return Promise.resolve(dataResponse);
+      });
+  }
+
   GetDatasourceList(controller: string, select: any[], orderBy: string, expand: any[] | undefined = undefined, customQuery: string = '', desc: boolean = true): ODataDatasourceList {
 
     return new ODataDatasourceList(this, controller, '', select, orderBy, customQuery, desc, '', expand);
@@ -196,6 +211,11 @@ export class GeneralService {
         `Codigo retornado por el servidor ${error.status}, Error: `, error.error);
     }
     console.log(error);
+
+    const message = (error?.error as any)?.message
+    if (message === '')
+      error.error.message = error.statusText;
+
     // Return an observable with a user-facing error message.
     // throw error;
     return throwError(() => (error?.error as any)?.message ?? error?.error);
@@ -239,7 +259,7 @@ class ODataDatasourceList {
   private lastListResult: any[] = [];
   private lastQueryFilter: string = '';
   private selectedKey: any | undefined = undefined;
-  private service?: GeneralService= undefined;
+  private service?: GeneralService = undefined;
 
   constructor(service: GeneralService, controller: string, method: string, select: any[], orderBy: string, customQuery: string, desc: boolean, customParameter: string, expand: any[] | undefined) {
     this.service = service;

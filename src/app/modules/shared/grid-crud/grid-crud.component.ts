@@ -207,8 +207,8 @@ export default class GridCrudComponent implements OnInit, OnDestroy {
             exhaustMap(([url, params]) => this.service.GetODATA(url, params)),
             takeUntilDestroyed(),
             catchError((error, originalObs) => {
-                let message = error.message;
-                if (error.error?.Message !== undefined)
+                let message = error?.message ?? error;
+                if (error?.error?.Message)
                     message = error.error.Message + ' - ' + message;
 
                 if (this.returnPage && !this.openEditNewTab)

@@ -20,6 +20,39 @@
 }
 
 <ng-template #formDetalle>
+  @if(hojaIngresoId){
+  <div class="widget-container">
+    <dx-resizable class="resizable-container" [minWidth]="500" [minHeight]="150" [maxHeight]="370" handles="right"
+      area=".widget-container">
+      <dx-toolbar id="toolbarCotizacion" #toolbarGrid [multiline]="true">
+        <dxi-item location="before" widget="dxButton">
+          <div *dxTemplate>
+            <dx-button icon="arrowleft" hint="Atrás" (onClick)="onClickButtonOptions('anterior')"></dx-button>
+          </div>
+        </dxi-item>
+
+        <dxi-item location="before" widget="dxButton">
+          <div *dxTemplate>
+            <dx-button icon="arrowright" hint="Siguiente" (onClick)="onClickButtonOptions('siguiente')"></dx-button>
+          </div>
+        </dxi-item>
+
+        <dxi-item location="before" locateInMenu="auto" menuItemTemplate="menuSeparatorTemplate">
+          <div *dxTemplate>
+            <div class="toolbar-separator"></div>
+          </div>
+        </dxi-item>
+
+        <dxi-item location="before" widget="dxButton">
+          <div *dxTemplate>
+            <dx-button icon="fa fa-file" hint="Reporte" (onClick)="onClickButtonOptions('reporte')"></dx-button>
+          </div>
+        </dxi-item>
+      </dx-toolbar>
+    </dx-resizable>
+  </div>
+  }
+
   <dx-form id='formEdit' [readOnly]="readonly" [formData]="selectedRecord" [labelMode]="'static'">
     <dxi-item itemType="group" [colCount]="4">
       <dxi-item [label]="{text:'Cliente'}" dataField="clientesId" editorType="dxSelectBox" [colSpan]="2"
@@ -71,6 +104,78 @@
       }
     </dxi-item>
   </dx-form>
+
+  @if(popupVisibleReporte){
+  <dx-popup [showTitle]="true" title="Reporte" [dragEnabled]="true" [hideOnOutsideClick]="false"
+    [showCloseButton]="true" container=".dx-viewport" [(visible)]="popupVisibleReporte" contentTemplate="popup-content">
+    <div *dxTemplate="let data of 'popup-content'">
+      <div id="reporteRender">
+        <ngx-extended-pdf-viewer [base64Src]="reportFileRender" [showToolbar]="currentZoomReport != 150"
+          (pdfLoaded)="loadingVisibleReporte = false" useBrowserLocale="true" backgroundColor="#ffffff"
+          [zoom]="currentZoomReport" [height]="'68dvh'" [handTool]="false" [showHandToolButton]="true"
+          [showOpenFileButton]="false" [customToolbar]="additionalButtons" [filenameForDownload]="'Report'">
+        </ngx-extended-pdf-viewer>
+
+        <ng-template #additionalButtons>
+          <div id="toolbarViewer" style="background-color:rgb(224 242 254);">
+            <div id="toolbarViewerLeft">
+              <pdf-toggle-sidebar></pdf-toggle-sidebar>
+              <div class="toolbarButtonSpacer"></div>
+              <pdf-paging-area></pdf-paging-area>
+            </div>
+            <pdf-zoom-toolbar></pdf-zoom-toolbar>
+            <div id="toolbarViewerRight">
+              <pdf-shy-button [cssClass]="'lg' | responsiveCSSClass" title="Enviar cotización para aprobación"
+                primaryToolbarId="nestedComponent" [order]="1" [closeOnClick]="true">
+                <button #nestedContent id="sidebarToggle" color="primary" class="toolbarButton"
+                  matTooltip="export an image" (click)="sendAprobacion()">
+                  <mat-icon style="color: #3f51b5;">email</mat-icon>
+                </button>
+              </pdf-shy-button>
+
+              <pdf-open-file></pdf-open-file>
+              <pdf-presentation-mode></pdf-presentation-mode>
+              <pdf-print></pdf-print>
+
+              <app-open-in-new-tab></app-open-in-new-tab> <!-- your custom component -->
+              <pdf-download></pdf-download>
+              <div class="verticalToolbarSeparator hiddenSmallView"></div>
+              <pdf-toggle-secondary-toolbar></pdf-toggle-secondary-toolbar>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+    <dxo-position at="center" my="center" collision="fit"></dxo-position>
+  </dx-popup>
+
+  <dx-load-panel id="loadingVisibleReporte" shadingColor="rgba(0,0,0,0.4)" [position]="{ of: '#reporteRender' }"
+    [(visible)]="loadingVisibleReporte" [showIndicator]="true" [showPane]="true" [shading]="true"
+    [hideOnOutsideClick]="false">
+  </dx-load-panel>
+
+  <dx-popup [width]="290" [height]="300" [showTitle]="true" title="Enviar Cotización" [resizeEnabled]="false"
+    [hideOnOutsideClick]="true" [showCloseButton]="true" [autofocus]="false" container=".dx-viewport"
+    [(visible)]="popupVisibleSendCotizacion" contentTemplate="popup-content">
+    <div *dxTemplate="let data of 'popup-content'">
+      <div id="sendCotizacion">
+        <p-listbox [options]="tiposMensajes" [(ngModel)]="selectedTipoMensaje" optionLabel="name"
+          [style]="{'width':'15rem'}" [listStyle]="{'max-height': '220px'}" />
+      </div>
+    </div>
+
+    <dxi-toolbar-item widget="dxButton" toolbar="bottom" location="after"
+      [options]="submitCodeButtonOptions"></dxi-toolbar-item>
+
+    <dxo-position at="center" my="center" collision="fit"></dxo-position>
+  </dx-popup>
+
+  <dx-load-panel id="loadingVisibleSendCotizacion" shadingColor="rgba(0,0,0,0.4)" [position]="{ of: '#sendCotizacion' }"
+    [(visible)]="loadingVisibleSendCotizacion" [showIndicator]="true" [showPane]="true" [shading]="true"
+    [hideOnOutsideClick]="false">
+  </dx-load-panel>
+  }
+
 </ng-template>
 
 <div style="display: none;">

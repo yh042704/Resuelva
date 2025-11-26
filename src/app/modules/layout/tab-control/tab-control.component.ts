@@ -81,7 +81,6 @@ export class TabControlComponent implements OnInit, OnDestroy {
           canClose: menu.canClose,
           uniqueCode: menu.code,
           command: (event: any) => {
-            console.log(event);
             this.activateMenu(event);
           }
         };

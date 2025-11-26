@@ -3,7 +3,7 @@ import { HttpParams } from '@angular/common/http';
 import { Component, inject, ViewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
-import { DxButtonModule, DxCheckBoxModule, DxFormModule, DxHtmlEditorModule, DxSelectBoxModule, DxTemplateModule, DxToolbarComponent } from 'devextreme-angular';
+import { DxButtonModule, DxCheckBoxModule, DxFormModule, DxHtmlEditorModule, DxLoadPanelModule, DxPopupModule, DxSelectBoxModule, DxTemplateModule, DxToolbarComponent } from 'devextreme-angular';
 import { EditorModule } from 'primeng/editor';
 import { TabViewModule } from 'primeng/tabview';
 import { forkJoin } from 'rxjs';
@@ -11,13 +11,16 @@ import { gridParamCrud } from 'src/app/core/interfaces/gridParamCrud';
 import { GeneralService } from 'src/app/core/services/general.service';
 import { generateUUID } from 'src/app/modules/shared/options';
 import GridCrudComponent from '../../../shared/grid-crud/grid-crud.component';
+import { CotizacionesDetalleComponent } from '../cotizaciones/cotizaciones-detalle/cotizaciones-detalle.component';
+import CotizacionesComponent from '../cotizaciones/cotizaciones.component';
 import { HojaIngresoDetalleComponent } from './hoja-ingreso-detalle/hoja-ingreso-detalle.component';
 
 @Component({
   selector: 'app-hoja-ingreso',
   standalone: true,
   imports: [CommonModule, GridCrudComponent, DxButtonModule, DxFormModule, TabViewModule, DxTemplateModule,
-    HojaIngresoDetalleComponent, DxSelectBoxModule, EditorModule, DxHtmlEditorModule, DxCheckBoxModule, FormsModule],
+    HojaIngresoDetalleComponent, DxSelectBoxModule, EditorModule, DxHtmlEditorModule, DxCheckBoxModule, FormsModule,
+    CotizacionesComponent, CotizacionesDetalleComponent, DxLoadPanelModule, DxPopupModule],
   templateUrl: './hoja-ingreso.html',
   styleUrl: './hoja-ingreso.scss'
 })
@@ -77,6 +80,7 @@ export default class HojaIngreso {
     onValidateCancel: (data: any, isNew: boolean): boolean => true,
     onBeforeEdit: (data: any, isNew: boolean): void => {
       data.hojaIngresoEquipoDetalles ??= [];
+      data.hojaIngresoId = 1;
 
       if (isNew) {
         data.noControl = generateUUID();
@@ -97,10 +101,17 @@ export default class HojaIngreso {
 
   private service = inject(GeneralService);
 
+  menuChanged: boolean = true;
   activeIndex: number = 0;
   selectedRecord: any;
   selectedRecordDetails: any = null;
+  loadingVisibleCotizacion: boolean = false;
+  loadingVisibleProcessCotizacion: boolean = false;
   estadosDocumento?: any[];
+  cotizacionDetalle: any[] = [];
+  tipoImpuesto: any[] = [];
+  validez: any[] = [];
+  selectedTipoImpuesto: any;
   displayExprTemplate = (field: any) => field != null ? field.nombre + ' ' + field.apellido : '';
   itemTemplate = (itemData: any, itemIndex: any, itemElement: any) => `${itemData.nombre} ${itemData.apellido}`;
   dsClientes = this.service.GetDatasourceList('Clientes', ['clientesId', 'nombre', 'apellido', 'correoElectronico', 'celular'], 'nombre', undefined, undefined, true).GetDatasourceList();
@@ -108,17 +119,49 @@ export default class HojaIngreso {
   constructor() {
     forkJoin({
       estados: this.service.Get('Catalogo', '', new HttpParams({ fromString: "$select=catalogosId,Descripcion,Posicion&$orderby=Posicion&filter=NombreTabla eq 'Estados'", })),
+      validezdias: this.service.Get('Catalogo', '', new HttpParams({ fromString: "$select=catalogosId,Descripcion,Posicion&$orderby=Posicion&filter=NombreTabla eq 'ValidezDias'", })),
+      tipoimpuesto: this.service.Get('Catalogo', '', new HttpParams({ fromString: "$select=catalogosId,Descripcion,Posicion&$orderby=Posicion&filter=NombreTabla eq 'TipoImpuesto'", })),
     }).pipe(
       takeUntilDestroyed()
     ).subscribe({
       next: (values: any) => {
         this.estadosDocumento = values.estados;
+        this.tipoImpuesto = values.tipoimpuesto;
+        this.validez = values.validezdias;
       }
     });
   }
 
   handleEventEditToolbar(event: DxToolbarComponent) {
-    const items = event.instance.option('items');
+    const data = [
+      {
+        icon: 'pi pi-money-bill',
+        hint: 'Ver Cotizaciones',
+        onClick: () => {
+          this.menuChanged = false;
+          this.activeIndex = 4;
+          setTimeout(() => {
+            this.menuChanged = true;
+          }, 0);
+        }
+      },
+      {
+        icon: 'plus',
+        hint: 'Crear Cotizaciones',
+        onClick: () => {
+          this.loadingVisibleCotizacion = true;
+        }
+      },
+      {
+        icon: 'fa-solid fa-business-time',
+        hint: 'Crear Orden de Trabajo',
+        onClick: () => {
+
+        }
+      }
+    ];
+
+    this.gridCrudComponent?.processEventEditToolbar(data);
   }
 
   validateNumber(e: any) {
