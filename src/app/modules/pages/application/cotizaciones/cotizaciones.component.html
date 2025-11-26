@@ -1,0 +1,78 @@
+@if(hojaIngresoId === 0){
+<app-grid-crud [gridParamCrud]="parametros" [openEditNewTab]="false" [editFormsTemplate]="appEditForms"
+  (toolbarEditEvent)="handleEventEditToolbar($event)">
+</app-grid-crud>
+
+<ng-template #appEditForms let-selectedRecord>
+  <ng-container *ngTemplateOutlet="formDetalle"></ng-container>
+</ng-template>
+}@else{
+@if(!loadingData){
+<ng-container *ngTemplateOutlet="formDetalle"></ng-container>
+}@else{
+<div class="widget-container">
+  <div style="height: 56px;"></div>
+  <div class="surface-card shadow-2 p-3 border-round">
+    <app-skeleton></app-skeleton>
+  </div>
+</div>
+}
+}
+
+<ng-template #formDetalle>
+  <dx-form id='formEdit' [readOnly]="readonly" [formData]="selectedRecord" [labelMode]="'static'">
+    <dxi-item itemType="group" [colCount]="4">
+      <dxi-item [label]="{text:'Cliente'}" dataField="clientesId" editorType="dxSelectBox" [colSpan]="2"
+        [editorOptions]="{ dataSource: dsClientes, showClearButton: true, displayExpr: displayExprTemplate, valueExpr: 'clientesId',
+                        searchEnabled: true, searchTimeout: 1000, itemTemplate: itemTemplate, searchExpr: ['nombre', 'apellido', 'correoElectronico', 'celular']}">
+        <dxi-validation-rule type="custom" [validationCallback]="validateNumber" message="Cliente es requerido">
+        </dxi-validation-rule>
+      </dxi-item>
+
+      <dxi-item [label]="{text:'# Cotización'}" dataField="documentoNo" [editorOptions]="{readOnly: true}">
+      </dxi-item>
+
+      <dxi-item [label]="{text:'# Hoja Ingreso'}" dataField="noControl" [editorOptions]="{readOnly: true}">
+      </dxi-item>
+
+      <dxi-item [label]="{text:'Fecha Doc.'}" editorType="dxDateBox"
+        [editorOptions]="{readOnly: true, type: 'datetime', displayFormat: 'dd/MMM/yyyy hh:mm aa'}"
+        dataField="fechaDocumento">
+      </dxi-item>
+
+      <dxi-item [label]="{text:'Validez'}" dataField="validezDias" editorType="dxSelectBox"
+        [editorOptions]="{ items: validezDias , valueExpr: 'catalogosId', displayExpr:'descripcion'}">
+        <dxi-validation-rule type="custom" [validationCallback]="validateNumber" message="Validez es requerido">
+        </dxi-validation-rule>
+      </dxi-item>
+
+      <dxi-item [label]="{text:'Tipo Impuesto'}" dataField="tipoImpuesto" editorType="dxSelectBox"
+        [editorOptions]="{ items: tipoImpuesto , valueExpr: 'catalogosId', displayExpr:'descripcion'}">
+        <dxi-validation-rule type="custom" [validationCallback]="validateNumber" message="Tipo Impuesto es requerido">
+        </dxi-validation-rule>
+      </dxi-item>
+
+      <dxi-item [label]="{text:'Estado'}" dataField="estado" editorType="dxSelectBox"
+        [editorOptions]="{ readOnly: true, items: estadosDocumento , valueExpr: 'catalogosId', displayExpr:'descripcion'}">
+      </dxi-item>
+
+      <dxi-item [label]="{text:'Notas'}" dataField="notas" [colSpan]="4">
+      </dxi-item>
+    </dxi-item>
+    <dxi-item itemType="group" caption="Detalle" [colSpan]="3">
+      @if(selectedRecord){
+      <dxi-item>
+        <div *dxTemplate style="margin-top: -10px !important;">
+          <app-cotizaciones-detalle [cotizacionId]="selectedRecord.cotizacionId"
+            [tipoImpuestoId]="selectedRecord.tipoImpuesto" [(surveyDetalleTemplate)]="selectedRecord.cotizacionDetalle">
+          </app-cotizaciones-detalle>
+        </div>
+      </dxi-item>
+      }
+    </dxi-item>
+  </dx-form>
+</ng-template>
+
+<div style="display: none;">
+  <dx-select-box id='selectBoxSample'></dx-select-box>
+</div>

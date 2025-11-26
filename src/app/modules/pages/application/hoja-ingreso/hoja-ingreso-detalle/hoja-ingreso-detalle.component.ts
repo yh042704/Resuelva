@@ -45,51 +45,21 @@ export class HojaIngresoDetalleComponent {
             icon: "fa-brands fa-algolia",
             hint: "Hallazgo",
             onClick: (e: any) => {
-              this.selectedRecord.set(e.row.data);
-
-              setTimeout(() => {
-                const tipoHard = this.tipoHardware.find(data => data.catalogosId === e.row.data.tipoHardware);
-                this.selectedRecord().descripTipoHardware = tipoHard.descripcion;
-
-                if ((this.selectedRecord().action ?? '') === '')
-                  this.selectedRecord().action = 'upd';
-
-                this.activeIndex.set(1);
-              }, 100);
+              this.changeValuesDetalle(e.row.data, 1);
             }
           },
           {
             icon: "fa-solid fa-pen-to-square",
             hint: "Pruebas",
             onClick: (e: any) => {
-              this.selectedRecord.set(e.row.data);
-
-              setTimeout(() => {
-                const tipoHard = this.tipoHardware.find(data => data.catalogosId === e.row.data.tipoHardware);
-                this.selectedRecord().descripTipoHardware = tipoHard.descripcion;
-
-                if ((this.selectedRecord().action ?? '') === '')
-                  this.selectedRecord().action = 'upd';
-
-                this.activeIndex.set(2);
-              }, 100);
+              this.changeValuesDetalle(e.row.data, 2);
             }
           },
           {
             icon: "fa-solid fa-handshake",
             hint: "Recomendaciones",
             onClick: (e: any) => {
-              this.selectedRecord.set(e.row.data);
-
-              setTimeout(() => {
-                const tipoHard = this.tipoHardware.find(data => data.catalogosId === e.row.data.tipoHardware);
-                this.selectedRecord().descripTipoHardware = tipoHard.descripcion;
-
-                if ((this.selectedRecord().action ?? '') === '')
-                  this.selectedRecord().action = 'upd';
-
-                this.activeIndex.set(3);
-              }, 100);
+              this.changeValuesDetalle(e.row.data, 3);
             }
           }
         ],
@@ -193,6 +163,20 @@ export class HojaIngresoDetalleComponent {
       if (this.activeIndex() === 0)
         this.selectedRecord.set(null);
     }, { allowSignalWrites: true });
+  }
+
+  changeValuesDetalle(dataSelect: any, index: number) {
+    this.selectedRecord.set(dataSelect);
+
+    setTimeout(() => {
+      const tipoHard = this.tipoHardware.find(data => data.catalogosId === dataSelect.tipoHardware);
+      this.selectedRecord().descripTipoHardware = tipoHard.descripcion;
+
+      if ((this.selectedRecord().action ?? '') === '')
+        this.selectedRecord().action = 'upd';
+
+      this.activeIndex.set(index);
+    }, 100);
   }
 
   onInitNewRow(e: any): void {

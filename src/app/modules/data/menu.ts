@@ -16,12 +16,12 @@ export const menus: Navigation[] = [
         icon: 'pi pi-book'
       },
       {
-        id: 'OrdenTrabajo',
-        title: 'Orden de Trabajo',
+        id: 'cotizaciones',
+        title: 'Cotizaciones',
         type: 'item',
         classes: 'nav-item',
-        link: () => import('../pages/application/pantalla2/pantalla2'),
-        icon: 'pi pi-briefcase',
+        link: () => import('../pages/application/cotizaciones/cotizaciones.component'),
+        icon: 'pi pi-money-bill'
       },
       {
         id: 'Aprobaciones',
@@ -30,7 +30,15 @@ export const menus: Navigation[] = [
         classes: 'nav-item',
         link: () => import('../pages/application/aprobaciones/aprobaciones.component'),
         icon: 'pi pi-check-circle',
-      }
+      },
+      {
+        id: 'OrdenTrabajo',
+        title: 'Orden de Trabajo',
+        type: 'item',
+        classes: 'nav-item',
+        link: () => import('../pages/application/pantalla2/pantalla2'),
+        icon: 'pi pi-briefcase',
+      },
     ]
   },
   {
@@ -39,13 +47,6 @@ export const menus: Navigation[] = [
     type: 'group',
     icon: 'icon-navigation',
     children: [
-      {
-        id: 'cotizaciones',
-        title: 'Cotizaciones',
-        type: 'item',
-        classes: 'nav-item',
-        icon: 'pi pi-money-bill'
-      },
       {
         id: 'compras',
         title: 'Compras',

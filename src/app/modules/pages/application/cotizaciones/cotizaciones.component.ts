@@ -1,32 +1,33 @@
 import { CommonModule } from '@angular/common';
 import { HttpParams } from '@angular/common/http';
-import { Component, inject, ViewChild } from '@angular/core';
+import { Component, inject, Input, ViewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormsModule } from '@angular/forms';
-import { DxButtonModule, DxCheckBoxModule, DxFormModule, DxHtmlEditorModule, DxSelectBoxModule, DxTemplateModule, DxToolbarComponent } from 'devextreme-angular';
-import { EditorModule } from 'primeng/editor';
-import { TabViewModule } from 'primeng/tabview';
+import { DxButtonModule, DxCheckBoxModule, DxFormModule, DxSelectBoxModule, DxTemplateModule, DxToolbarComponent } from 'devextreme-angular';
 import { forkJoin } from 'rxjs';
 import { gridParamCrud } from 'src/app/core/interfaces/gridParamCrud';
 import { GeneralService } from 'src/app/core/services/general.service';
 import { generateUUID } from 'src/app/modules/shared/options';
+import { SkeletonComponent } from 'src/app/modules/shared/skeleton/skeleton.component';
 import GridCrudComponent from '../../../shared/grid-crud/grid-crud.component';
-import { HojaIngresoDetalleComponent } from './hoja-ingreso-detalle/hoja-ingreso-detalle.component';
+import { CotizacionesDetalleComponent } from './cotizaciones-detalle/cotizaciones-detalle.component';
 
 @Component({
-  selector: 'app-hoja-ingreso',
+  selector: 'app-cotizaciones',
   standalone: true,
-  imports: [CommonModule, GridCrudComponent, DxButtonModule, DxFormModule, TabViewModule, DxTemplateModule,
-    HojaIngresoDetalleComponent, DxSelectBoxModule, EditorModule, DxHtmlEditorModule, DxCheckBoxModule, FormsModule],
-  templateUrl: './hoja-ingreso.html',
-  styleUrl: './hoja-ingreso.scss'
+  imports: [CommonModule, GridCrudComponent, DxButtonModule, DxFormModule, DxTemplateModule, CotizacionesDetalleComponent,
+    DxSelectBoxModule, DxCheckBoxModule, SkeletonComponent, DxSelectBoxModule],
+  templateUrl: './cotizaciones.component.html',
+  styleUrl: './cotizaciones.component.scss'
 })
-export default class HojaIngreso {
+export default class CotizacionesComponent {
   @ViewChild(GridCrudComponent) gridCrudComponent?: GridCrudComponent;
+  @Input() hojaIngresoId: number = 0;
 
+  loadingData: boolean = false;
+  readonly: boolean = false;
   parametros: gridParamCrud = {
-    getUrl: 'HojaIngresoEquipo',
-    key: 'hojaIngresoEquipoId',
+    getUrl: 'Cotizaciones',
+    key: 'cotizacionId',
     keyType: 'Int32',
     QuerySelectAll: false,
     pageSize: 20,
@@ -40,16 +41,20 @@ export default class HojaIngreso {
     columnsRecords: [
       {
         caption: 'ID',
-        dataField: 'hojaIngresoEquipoId',
+        dataField: 'cotizacionId',
         sort: true,
         desc: true,
         default: 0,
         visible: false,
       },
       {
-        caption: '# Doc.',
+        caption: '# Cotización',
+        dataField: 'documentoNo',
+        width: 300
+      },
+      {
+        caption: '# Hoja Ingreso',
         dataField: 'noControl',
-        default: '',
         width: 300
       },
       {
@@ -68,18 +73,18 @@ export default class HojaIngreso {
         width: 175
       },
       {
-        caption: 'Descripción',
-        dataField: 'descripcionProblema',
+        caption: 'Notas',
+        dataField: 'notas',
         width: 350
       },
     ],
     onValidateSave: (data: any, isNew: boolean) => true,
     onValidateCancel: (data: any, isNew: boolean): boolean => true,
     onBeforeEdit: (data: any, isNew: boolean): void => {
-      data.hojaIngresoEquipoDetalles ??= [];
+      data.cotizacionDetalle ??= [];
 
       if (isNew) {
-        data.noControl = generateUUID();
+        data.documentoNo = generateUUID();
         data.fechaDocumento = new Date();
 
         const valueEstado = this.estadosDocumento?.find((data) => data.posicion === 0);
@@ -88,7 +93,7 @@ export default class HojaIngreso {
 
       this.selectedRecord = data;
     },
-    expands: ['hojaIngresoEquipoDetalles'],
+    expands: ['cotizacionDetalle'],
     createUrl: '/create',
     updateUrl: '/update',
     deleteUrl: '/remove',
@@ -99,8 +104,9 @@ export default class HojaIngreso {
 
   activeIndex: number = 0;
   selectedRecord: any;
-  selectedRecordDetails: any = null;
   estadosDocumento?: any[];
+  validezDias?: any[];
+  tipoImpuesto?: any[];
   displayExprTemplate = (field: any) => field != null ? field.nombre + ' ' + field.apellido : '';
   itemTemplate = (itemData: any, itemIndex: any, itemElement: any) => `${itemData.nombre} ${itemData.apellido}`;
   dsClientes = this.service.GetDatasourceList('Clientes', ['clientesId', 'nombre', 'apellido', 'correoElectronico', 'celular'], 'nombre', undefined, undefined, true).GetDatasourceList();
@@ -108,11 +114,15 @@ export default class HojaIngreso {
   constructor() {
     forkJoin({
       estados: this.service.Get('Catalogo', '', new HttpParams({ fromString: "$select=catalogosId,Descripcion,Posicion&$orderby=Posicion&filter=NombreTabla eq 'Estados'", })),
+      validezdias: this.service.Get('Catalogo', '', new HttpParams({ fromString: "$select=catalogosId,Descripcion,Posicion&$orderby=Posicion&filter=NombreTabla eq 'ValidezDias'", })),
+      tipoimpuesto: this.service.Get('Catalogo', '', new HttpParams({ fromString: "$select=catalogosId,Descripcion,Posicion&$orderby=Posicion&filter=NombreTabla eq 'TipoImpuesto'", })),
     }).pipe(
       takeUntilDestroyed()
     ).subscribe({
       next: (values: any) => {
         this.estadosDocumento = values.estados;
+        this.validezDias = values.validezdias;
+        this.tipoImpuesto = values.tipoimpuesto;
       }
     });
   }
