@@ -124,4 +124,20 @@ h6 {
 
 .p-tabview-nav {
   padding-left: unset !important;
+  margin-bottom: unset !important;
+}
+
+.dx-layout-manager .dx-field-item {
+  padding-bottom: unset;
+  padding-top: 12px !important;
+  padding-inline-start: 0px !important;
+}
+
+.p-tabview .p-tabview-panels {
+  padding: unset !important;
+}
+
+.dx-form-group-with-caption>.dx-form-group-content {
+  padding-top: unset !important;
+  ;
 }

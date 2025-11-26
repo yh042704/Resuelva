@@ -1,4 +1,10 @@
 import dxToolbar from "devextreme/ui/toolbar";
+import Guid from 'devextreme/core/guid';
+
+export const generateUUID = () => {
+
+    return new Guid().toString();
+};
 
 export interface Command {
     (this: any, instance: any, eventAfterAction: any, showMessage: boolean): any
