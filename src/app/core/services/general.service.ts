@@ -254,12 +254,14 @@ class ODataDatasourceList {
   private lastSkip: number = 0;
   private controller: string = '';
   private method: string = '';
-  private customQuery: string = '';
   private customParameter: string = '';
   private lastListResult: any[] = [];
-  private lastQueryFilter: string = '';
   private selectedKey: any | undefined = undefined;
   private service?: GeneralService = undefined;
+
+  customQuery: string = '';
+  refreshData: boolean = false;
+  lastQueryFilter: string = '';
 
   constructor(service: GeneralService, controller: string, method: string, select: any[], orderBy: string, customQuery: string, desc: boolean, customParameter: string, expand: any[] | undefined) {
     this.service = service;
@@ -291,6 +293,8 @@ class ODataDatasourceList {
           const searchKey = this.lastListResult.filter((obj: any) => obj[0][loadOptions.select[0]] === key);
           if (searchKey.length !== 0)
             resolve(searchKey[0]);
+          else if (this.refreshData)
+            this.lastListResult = [];
           else {
             this.selectedKey = key;
             firstValueFrom(this.service!.GetODATA(this.controller + (this.method !== '' ? '\\' + this.method : ''), new HttpParams({ fromString: stringParam })))

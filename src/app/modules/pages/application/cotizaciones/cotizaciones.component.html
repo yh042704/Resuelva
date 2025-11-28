@@ -96,7 +96,7 @@
       @if(selectedRecord){
       <dxi-item>
         <div *dxTemplate style="margin-top: -10px !important;">
-          <app-cotizaciones-detalle [cotizacionId]="selectedRecord.cotizacionId"
+          <app-cotizaciones-detalle [cotizacionId]="selectedRecord.cotizacionId" [readOnlyForm]="true"
             [tipoImpuestoId]="selectedRecord.tipoImpuesto" [(surveyDetalleTemplate)]="selectedRecord.cotizacionDetalle">
           </app-cotizaciones-detalle>
         </div>

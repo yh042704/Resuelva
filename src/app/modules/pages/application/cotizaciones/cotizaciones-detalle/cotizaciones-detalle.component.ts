@@ -16,9 +16,10 @@ import GridCrudComponent from 'src/app/modules/shared/grid-crud/grid-crud.compon
   styleUrl: './cotizaciones-detalle.component.scss'
 })
 export class CotizacionesDetalleComponent {
-  @ViewChild('dataGridCrudDetalleEditTable') dataGridCrudDetalleEditTable?: GridCrudComponent;
+  @ViewChild('dataGridCrudCotizacionDetalleEditTable') dataGridCrudDetalleEditTable?: GridCrudComponent;
 
   @Input() cotizacionId: number = 0;
+  @Input() hojaIngresoEquipoDetalleId?: number;
   @Input() tipoImpuestoId: number = 0;
   @Input() readOnlyForm: boolean = false;
 
@@ -40,7 +41,7 @@ export class CotizacionesDetalleComponent {
     columnsRecords: [
       {
         type: 'buttons',
-        width: 65,
+        width: 65
       },
       {
         caption: 'ID',
@@ -54,52 +55,63 @@ export class CotizacionesDetalleComponent {
       {
         caption: 'Tipo',
         dataField: 'tipoProducto',
-        lookup: {
-          dataSource: () => ({
-            store: this.tipoProducto,
-          }),
-          displayExpr: 'descripcion',
-          valueExpr: 'catalogosId',
-        },
-        width: 175
-      },
-      {
-        caption: 'Producto',
-        dataField: 'productoId',
-        alignment: 'left',
-        validationRules: [{ type: 'required', message: 'Producto es requerido' }],
-        calculateDisplayValue: (rowData: any) => rowData.ProductName,
+        align: 'left',
         editCellTemplate: (container: any, options: any) => {
-          const selectBoxSampleElement = document.getElementById('selectBoxSample')?.cloneNode(true) as HTMLElement;
+        const selectBoxSampleElement = document.getElementById('selectBoxSample')?.cloneNode(true) as HTMLElement;
           const dxSelec = new dxSelectBox(selectBoxSampleElement, {
             placeholder: 'Seleccione...',
-            dataSource: this.dsProductos,
-            value: options.data.productoId,
-            displayExpr: 'nombre',
-            valueExpr: 'productoId',
-            showClearButton: true,
-            searchEnabled: true,
-            searchExpr: ['nombre', 'codigo'],
+            items: this.tipoProducto,
+            value: options.data.tipoProducto,
+            displayExpr: 'descripcion',
+            valueExpr: 'catalogosId',
             onValueChanged: (e: any) => {
               setTimeout(() => {
-                const selectedItemProduct = e.component.option('selectedItem');
-                options.data.ProductName = selectedItemProduct?.nombre;
-                options.data.ProductName = selectedItemProduct?.nombre;
-                options.data.ProductName = selectedItemProduct?.nombre;
                 options.setValue(e.value);
 
-
                 this.dataGridCrudDetalleEditTable?.dataGrid()?.instance.getDataSource().reload();
-              }, 50)
+              }, 100)
             }
           });
 
           return dxSelec.element();
         },
-        width: 225
+        width: 150
       },
       {
-        dataField: 'ProductName',
+        caption: 'Producto',
+        dataField: 'productosId',
+        alignment: 'left',
+        validationRules: [{ type: 'required', message: 'Producto es requerido' }],
+        calculateDisplayValue: (rowData: any) => rowData.descripcionProducto,
+        editCellTemplate: (container: any, options: any) => {
+          const selectBoxSampleElement = document.getElementById('selectBoxSample')?.cloneNode(true) as HTMLElement;
+          const dxSelec = new dxSelectBox(selectBoxSampleElement, {
+            placeholder: 'Seleccione...',
+            dataSource: this.dsProductos.GetDatasourceList(),
+            value: options.data.productosId,
+            displayExpr: 'nombre',
+            valueExpr: 'productosId',
+            searchEnabled: true,
+            searchExpr: ['nombre', 'codigo'],
+            onValueChanged: (e: any) => {
+              setTimeout(() => {
+                const selectedItemProduct = e.component.option('selectedItem');
+
+                options.data.descripcionProducto = selectedItemProduct.nombre;
+                options.data.precio = selectedItemProduct.precio;
+                options.data.costo = selectedItemProduct.costo;
+                options.setValue(e.value);
+                this.dataGridCrudDetalleEditTable?.dataGrid()?.instance.refresh(true);
+              }, 100)
+            }
+          });
+
+          return dxSelec.element();
+        },
+        width: 350
+      },
+      {
+        dataField: 'descripcionProducto',
         visible: false
       },
       {
@@ -114,8 +126,8 @@ export class CotizacionesDetalleComponent {
           }
         ],
         setCellValue: (newData: any, value: any, currentRowData: any) => {
-          newData.SubTotal = (currentRowData.FeeCharge * value) - currentRowData.DiscountAmount;
-          newData.Quantity = value;
+          newData.cantidad = value;
+          newData.subTotal = (currentRowData.precio * value);
         },
         dataType: "number",
         width: 125
@@ -140,12 +152,7 @@ export class CotizacionesDetalleComponent {
         dataField: 'costo',
         dataType: "number",
         validationRules: [
-          { type: 'required', message: 'El costo  es requerido' },
-          {
-            type: "custom",
-            validationCallback: this.validateNumber,
-            message: "El costo es requerido"
-          }
+          { type: 'required', message: 'El costo  es requerido' }
         ],
         allowEditing: false,
         width: 125,
@@ -160,18 +167,18 @@ export class CotizacionesDetalleComponent {
           displayExpr: 'descripcion',
           valueExpr: 'catalogosId',
         },
-        width: 225
+        width: 175
       },
       {
         caption: 'SubTotal',
-        dataField: 'SubTotal',
-        calculateDisplayValue: (rowData: any) => rowData.SubTotal ? rowData.SubTotal : 0.00,
-        calculateCellValue: (rowData: any) => { rowData.SubTotal = (rowData.cantidad * rowData.precio); return rowData.SubTotal },
+        dataField: 'subTotal',
+        calculateDisplayValue: (rowData: any) => rowData.subTotal ? rowData.subTotal : 0.00,
+        calculateCellValue: (rowData: any) => { rowData.subTotal = (rowData.cantidad * rowData.precio); return rowData.subTotal },
         dataType: "number",
         format: "#,##0.##",
         allowEditing: false,
         summaryType: "sum",
-        width: 200,
+        width: 175,
       },
       // {
       //   caption: 'Impuesto',
@@ -199,7 +206,7 @@ export class CotizacionesDetalleComponent {
 
   tipoImpuesto: any[] = [];
   tipoProducto: any[] = [];
-  dsProductos = this.service.GetDatasourceList('Productos', ['productosId', 'nombre', 'codigo', 'precio', 'costo'], 'nombre', undefined, undefined, true).GetDatasourceList();
+  dsProductos = this.service.GetDatasourceList('Productos', ['productosId', 'nombre', 'codigo', 'precio', 'costo'], 'nombre', undefined, undefined, true);
 
   constructor() {
     forkJoin({
@@ -222,8 +229,13 @@ export class CotizacionesDetalleComponent {
 
   onInitNewRow(e: any): void {
     e.data.cotizacionDetalleId = 0;
+    e.data.hojaIngresoEquipoDetalleId = this.hojaIngresoEquipoDetalleId;
     e.data.cotizacionId = this.cotizacionId;
     e.data.tipoImpuesto = this.tipoImpuestoId;
+    e.data.subTotal = 0.0;
+    e.data.cantidad = 0;
+    e.data.precio = 0;
+    e.data.costo = 0
   }
 
   validateNumber(e: any) {

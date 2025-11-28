@@ -1,0 +1,132 @@
+<app-grid-crud [gridParamCrud]="parametros" [openEditNewTab]="false" [editFormsTemplate]="appEditForms"
+(toolbarEditEvent)="handleEventEditToolbar($event)">
+</app-grid-crud>
+
+<ng-template #appEditForms let-selectedRecord>
+  <p-tabView [(activeIndex)]="activeIndex">
+    <p-tabPanel header="Datos Generales">
+      <dx-form id="formEdit" [formData]="selectedRecord" [labelMode]="'static'">
+        <dxi-item itemType="group" [colCount]="4">
+          <dxi-item [label]="{text:'Cliente'}" dataField="clientesId" editorType="dxSelectBox" [colSpan]="2"
+            [editorOptions]="{ readOnly: true, dataSource: dsClientes, showClearButton: true, displayExpr: displayExprTemplate, valueExpr: 'clientesId',
+                        searchEnabled: true, searchTimeout: 1000, itemTemplate: itemTemplate, searchExpr: ['nombre', 'apellido', 'correoElectronico', 'celular']}">
+          </dxi-item>
+
+          <dxi-item [label]="{text:'No. Doc.'}" dataField="documentoNo" [editorOptions]="{readOnly: true}">
+          </dxi-item>
+
+           <dxi-item [label]="{text:'No. Cot.'}" dataField="documentoNoCot" [editorOptions]="{readOnly: true}">
+          </dxi-item>
+
+          <dxi-item [label]="{text:'Fecha Doc.'}" editorType="dxDateBox"
+            [editorOptions]="{readOnly: true, type: 'datetime', displayFormat: 'dd/MMM/yyyy hh:mm aa'}"
+            dataField="fechaDocumento">
+          </dxi-item>
+
+          <dxi-item [label]="{text:'Estado'}" dataField="estado" editorType="dxSelectBox"
+            [editorOptions]="{ readOnly: true, items: estadosDocumento , valueExpr: 'catalogosId', displayExpr:'descripcion'}">
+          </dxi-item>
+
+          <dxi-item [label]="{text:'Notas'}" dataField="notas" [colSpan]="2">
+          </dxi-item>
+        </dxi-item>
+        <dxi-item itemType="group" caption="Detalle" [colSpan]="3">
+          @if(selectedRecord){
+          <dxi-item>
+            <div *dxTemplate style="margin-top: -10px !important">
+              <app-orden-trabajo-detalle [ordenTrabajoId]="selectedRecord.ordenTrabajoId"
+                [(selectedRecord)]="selectedRecordDetails" [(activeIndex)]="activeIndex"
+                [(surveyDetalleTemplate)]="selectedRecord.ordenTrabajoDetalles">
+              </app-orden-trabajo-detalle>
+            </div>
+          </dxi-item>
+          }
+        </dxi-item>
+      </dx-form>
+    </p-tabPanel>
+    <p-tabPanel header="Descripción" [disabled]="true">
+      <br />
+      @if(selectedRecordDetails && activeIndex === 1){
+      <div class="card" style="height: 66vh!important;">
+        <div class="card-header">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-3">
+                <dx-select-box id="act" placeholder="Actividades" [items]="actividades" displayExpr="descripcion"
+                  valueExpr="catalogosId" [showClearButton]="true" (onValueChanged)="onValueReportChanged($event)"
+                  style="width: 100%; max-width: 275px;" [value]="selectedRecordDetails.actividadId"></dx-select-box>
+              </div>
+              <div class="col-md-6">
+                Tipo Hardware:
+                <b>{{selectedRecordDetails?.descripTipoHardware}}</b>, Marca:
+                <b>{{selectedRecordDetails?.marca}}</b>, Modelo:
+                <b>{{selectedRecordDetails?.modelo}}</b>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <dx-html-editor [style]="{ height: '55dvh' }" [(ngModel)]="selectedRecordDetails.descripcion"
+            name="descripcion">
+            <dxo-toolbar [multiline]="isMultiline">
+              <dxi-item name="undo"></dxi-item>
+              <dxi-item name="redo"></dxi-item>
+              <dxi-item name="separator"></dxi-item>
+              <dxi-item name="size" [acceptedValues]="['8pt', '10pt', '12pt', '14pt', '18pt', '24pt', '36pt']"
+                [options]="{ inputAttr: { 'aria-label': 'Font size' } }"></dxi-item>
+              <dxi-item name="font" [acceptedValues]="[
+        'Arial',
+        'Courier New',
+        'Georgia',
+        'Impact',
+        'Lucida Console',
+        'Tahoma',
+        'Times New Roman',
+        'Verdana'
+      ]" [options]="{ inputAttr: { 'aria-label': 'Font family' } }"></dxi-item>
+              <dxi-item name="separator"></dxi-item>
+              <dxi-item name="bold"></dxi-item>
+              <dxi-item name="italic"></dxi-item>
+              <dxi-item name="strike"></dxi-item>
+              <dxi-item name="underline"></dxi-item>
+              <dxi-item name="separator"></dxi-item>
+              <dxi-item name="alignLeft"></dxi-item>
+              <dxi-item name="alignCenter"></dxi-item>
+              <dxi-item name="alignRight"></dxi-item>
+              <dxi-item name="alignJustify"></dxi-item>
+              <dxi-item name="separator"></dxi-item>
+              <dxi-item name="orderedList"></dxi-item>
+              <dxi-item name="bulletList"></dxi-item>
+              <dxi-item name="separator"></dxi-item>
+              <dxi-item name="header" [acceptedValues]="[false, 1, 2, 3, 4, 5]"
+                [options]="{ inputAttr: { 'aria-label': 'Header' } }"></dxi-item>
+              <dxi-item name="separator"></dxi-item>
+              <dxi-item name="color"></dxi-item>
+              <dxi-item name="background"></dxi-item>
+              <dxi-item name="separator"></dxi-item>
+              <dxi-item name="link"></dxi-item>
+              <dxi-item name="image"></dxi-item>
+              <dxi-item name="separator"></dxi-item>
+              <dxi-item name="clear"></dxi-item>
+              <dxi-item name="codeBlock"></dxi-item>
+              <dxi-item name="blockquote"></dxi-item>
+              <dxi-item name="separator"></dxi-item>
+              <dxi-item name="insertTable"></dxi-item>
+              <dxi-item name="deleteTable"></dxi-item>
+              <dxi-item name="insertRowAbove"></dxi-item>
+              <dxi-item name="insertRowBelow"></dxi-item>
+              <dxi-item name="deleteRow"></dxi-item>
+              <dxi-item name="insertColumnLeft"></dxi-item>
+              <dxi-item name="insertColumnRight"></dxi-item>
+              <dxi-item name="deleteColumn"></dxi-item>
+            </dxo-toolbar>
+            <dxo-media-resizing [enabled]="true"> </dxo-media-resizing>
+            <dxo-image-upload [tabs]="currentTab" fileUploadMode="base64">
+            </dxo-image-upload>
+          </dx-html-editor>
+        </div>
+      </div>
+      }
+    </p-tabPanel>
+  </p-tabView>
+</ng-template>

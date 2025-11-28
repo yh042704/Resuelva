@@ -248,7 +248,7 @@
     </p-tabPanel>
     @if(activeIndex === 4){
     <p-tabPanel header="Cotizaciones">
-      <app-cotizaciones [(indexTab)]="activeIndex" [hojaIngresoId]="selectedRecord.hojaIngresoId"></app-cotizaciones>
+      <app-cotizaciones [(indexTab)]="activeIndex" [hojaIngresoId]="selectedRecord.hojaIngresoEquipoId"></app-cotizaciones>
     </p-tabPanel>
     }
   </p-tabView>
@@ -265,32 +265,42 @@
         <div class="card-header">
           <div class="container">
             <div class="row">
-              <div class="col-md-3">
-                <dx-select-box placeholder="Seleccione el hardware" [items]="selectedRecord?.hojaIngresoEquipoDetalles"
-                  displayExpr="name" valueExpr="hojaIngresoEquipoDetalleId" [showClearButton]="true"
-                  (onValueChanged)="onValueReportChanged($event)"
-                  style="width: 100%; max-width: 325px;"></dx-select-box>
+              <div class="col-md-4">
+                <dx-select-box id="hard" placeholder="Seleccione el hardware" [items]="selectedRecord?.hojaIngresoEquipoDetalles"
+                  displayExpr="marca" valueExpr="hojaIngresoEquipoDetalleId" [showClearButton]="true"
+                  fieldTemplate="field" itemTemplate="item" (onValueChanged)="onValueReportChanged($event)"
+                  style="width: 100%; max-width: 425px;">
+                  <div *dxTemplate="let data of 'field'">
+                    <dx-text-box
+                      [value]="data && 'Marca: ' + data.marca + ', Modelo: ' + data.modelo + ', Serie: ' + data.serie"
+                      [readOnly]="true">
+                    </dx-text-box>
+                  </div>
+                  <div *dxTemplate="let data of 'item'">
+                    Marca: {{ data.marca }}, Modelo: {{ data.modelo }}, Serie: {{ data.serie }}
+                  </div>
+                </dx-select-box>
               </div>
-              <div class="col-md-3">
-                <dx-select-box placeholder="Seleccione un impuesto" [items]="tipoImpuesto" displayExpr="descripcion"
+              <div class="col-md-2">
+                <dx-select-box  id="imp" placeholder="Impuesto" [items]="tipoImpuesto" displayExpr="descripcion"
                   valueExpr="catalogosId" [showClearButton]="true" (onValueChanged)="onValueReportChanged($event)"
-                  style="width: 100%; max-width: 325px;"></dx-select-box>
+                  style="width: 100%; max-width: 275px;"></dx-select-box>
               </div>
-              <div class="col-md-3">
-                <dx-select-box placeholder="Seleccione validez" [items]="validez" displayExpr="descripcion"
+              <div class="col-md-2">
+                <dx-select-box  id="validez" placeholder="Validez" [items]="validez" displayExpr="descripcion"
                   valueExpr="catalogosId" [showClearButton]="true" (onValueChanged)="onValueReportChanged($event)"
-                  style="width: 100%; max-width: 325px;"></dx-select-box>
+                  style="width: 100%; max-width: 275px;"></dx-select-box>
               </div>
               <div class="col-md-3">
-                <dx-button icon="check" type="success" text="Crear" (onClick)="renderReport()">
+                <dx-button icon="check" type="success" text="Crear" (onClick)="crearCotizacion($event)">
                 </dx-button>
               </div>
             </div>
           </div>
         </div>
         <div class="card-body">
-          <app-cotizaciones-detalle [cotizacionId]="0" [tipoImpuestoId]="selectedTipoImpuesto?.catalogosId"
-            [(surveyDetalleTemplate)]="cotizacionDetalle">
+          <app-cotizaciones-detalle [cotizacionId]="0" [tipoImpuestoId]="selectedCotizaacionMig.selectedTipoImpuesto"
+           [hojaIngresoEquipoDetalleId]="selectedCotizaacionMig.selectedHojaDetalleId" [(surveyDetalleTemplate)]="cotizacionDetalle">
           </app-cotizaciones-detalle>
         </div>
       </div>

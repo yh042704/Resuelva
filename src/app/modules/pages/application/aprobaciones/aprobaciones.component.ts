@@ -35,17 +35,17 @@ export default class AprobacionesComponent {
       {
         caption: 'Usuario Solicitante',
         dataField: 'nombreUsuario',
-        width: 300
+        width: 225
       },
       {
         caption: 'Cliente',
         dataField: 'nombreCliente',
-        width: 300
+        width: 250
       },
       {
         caption: '# Cotización',
-        dataField: 'NoDocumento',
-        width: 200
+        dataField: 'noDocumento',
+        width: 325
       },
       {
         caption: 'Método',

@@ -5,6 +5,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { DxButtonModule, DxCheckBoxModule, DxFormModule, DxLoadPanelModule, DxPopupModule, DxResizableModule, DxSelectBoxModule, DxTemplateModule, DxToolbarComponent, DxToolbarModule } from 'devextreme-angular';
+import _ from 'lodash';
 import { NgxExtendedPdfViewerModule, NgxExtendedPdfViewerService } from 'ngx-extended-pdf-viewer';
 import { ListboxModule } from 'primeng/listbox';
 import { catchError, exhaustMap, forkJoin, Subject, tap } from 'rxjs';
@@ -52,7 +53,7 @@ export default class CotizacionesComponent implements OnChanges {
     showButtonRefresh: true,
     showButtonEdit: true,
     showButtonRemove: true,
-    showButtonNew: true,
+    showButtonNew: false,
     columnsRecords: [
       {
         caption: 'ID',
@@ -78,7 +79,7 @@ export default class CotizacionesComponent implements OnChanges {
         width: 300
       },
       {
-        caption: 'estado',
+        caption: 'Estado',
         dataField: 'estadoName',
         width: 100
       },
@@ -168,7 +169,7 @@ export default class CotizacionesComponent implements OnChanges {
   currentZoomReport: number | string | undefined = 'page-width'
   displayExprTemplate = (field: any) => field != null ? field.nombre + ' ' + field.apellido : '';
   itemTemplate = (itemData: any, itemIndex: any, itemElement: any) => `${itemData.nombre} ${itemData.apellido}`;
-  dsClientes = this.service.GetDatasourceList('Clientes', ['clientesId', 'nombre', 'apellido', 'correoElectronico', 'celular'], 'nombre', undefined, undefined, true).GetDatasourceList();
+  dsClientes = this.service.GetDatasourceList('Clientes', ['clientesId', 'nombre', 'apellido', 'correoElectronico', 'direccion', 'celular'], 'nombre', undefined, undefined, true).GetDatasourceList();
 
   constructor(private pdfViewerService: NgxExtendedPdfViewerService) {
     forkJoin({
@@ -189,7 +190,7 @@ export default class CotizacionesComponent implements OnChanges {
       tap((reporteName: string) => {
         this.loadingVisibleReporte = true;
       }),
-      exhaustMap((reporteName: string) => this.service.Get('Surveys', `GetReport?filename=${reporteName}`)),
+      exhaustMap((reporteName: string) => this.service.Get(this.parametros.getUrl, `GetReport?filename=${reporteName}`)),
       takeUntilDestroyed(),
       catchError((error, originalObs) => {
         this.notifications.showMessage(this.service.handleMessageError(error), 'error');
@@ -199,7 +200,11 @@ export default class CotizacionesComponent implements OnChanges {
       })
     ).subscribe({
       next: (dataResponse: any) => {
-        const data = {};
+        const data = structuredClone(this.selectedRecord);
+        data.subTotal = _.sumBy(data.cotizacionDetalle, 'subTotal');
+        data.impuesto = data.subTotal * (data.porcentaje / 100);
+        data.impuesto = Number(data.impuesto.toFixed(2))
+        data.total = data.subTotal + data.impuesto;
 
         this.service.GetCarboneReport(dataResponse, 'report_cotizacion' + this.selectedRecord.cotizacionId, data)
           .then((response: any) => {
@@ -218,6 +223,7 @@ export default class CotizacionesComponent implements OnChanges {
         if (error.error?.Message !== undefined)
           message = error.error.Message + ' - ' + message;
 
+        this.loadingData = false;
         this.indexTab.set(0);
         this.selectedCotizacionesPorHojaIngreso = [];
         this.notifications.showMessage(message, 'error');
@@ -226,13 +232,17 @@ export default class CotizacionesComponent implements OnChanges {
       })
     ).subscribe({
       next: (responseGridCrud: any) => {
-        if (responseGridCrud === undefined)
-          throw new Error('Registro no encontrado favor verificar');
+        if (responseGridCrud.totalCount === 0) {
+          this.notifications.showMessage('Cotizaciones no encontradas, favor verificar', 'error');
+          this.indexTab.set(0);
 
-        this.selectedCotizacionesPorHojaIngreso = responseGridCrud as any[];
-        const [result] = this.selectedCotizacionesPorHojaIngreso;
-        this.selectedRecord = result?.value ?? result;
-        this.totalElementos = result?.totalCount ?? 0;
+          return;
+        }
+
+        this.loadingData = false;
+        this.selectedCotizacionesPorHojaIngreso = responseGridCrud?.value as any[]
+        [this.selectedRecord] = this.selectedCotizacionesPorHojaIngreso;
+        this.totalElementos = responseGridCrud?.totalCount ?? 0;
       }
     });
   }
@@ -240,12 +250,13 @@ export default class CotizacionesComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes["hojaIngresoId"]) {
       this.readonly = true;
+      this.loadingData = true;
 
       const url: string = this.parametros.getUrl;
       const params: HttpParams = new HttpParams({
         fromString: `$filter=hojaIngresoEquipoId eq ${this.hojaIngresoId}` +
           (this.parametros.expands ? '&$expand=' + this.parametros.expands : '') +
-          '$orderby=hojaIngresoEquipoId desc&$count=true'
+          '&$orderby=hojaIngresoEquipoId desc&$count=true'
       });
 
       this.searchCotizacion$.next([url, params]);
@@ -254,7 +265,7 @@ export default class CotizacionesComponent implements OnChanges {
 
   onClickButtonOptions(event: string) {
     if (event === 'anterior') {
-      this.primerElemento -= 1;
+      this.primerElemento--;
       if (this.primerElemento < 0) {
         this.primerElemento = 0;
 
@@ -263,9 +274,9 @@ export default class CotizacionesComponent implements OnChanges {
 
       this.selectedRecord = this.selectedCotizacionesPorHojaIngreso[this.primerElemento];
     } else if (event === 'siguiente') {
-      this.primerElemento += 1;
-      if (this.primerElemento > this.totalElementos) {
-        this.primerElemento = this.totalElementos;
+      this.primerElemento++;
+      if (this.primerElemento >= (this.totalElementos - 1)) {
+        this.primerElemento = this.totalElementos - 1;
 
         return;
       }
@@ -282,7 +293,6 @@ export default class CotizacionesComponent implements OnChanges {
   }
 
   handleEventEditToolbar(event: DxToolbarComponent) {
-    console.log(this.isNew);
     const data = [
       {
         icon: 'fa fa-file',
@@ -302,14 +312,16 @@ export default class CotizacionesComponent implements OnChanges {
   }
 
   private async sendAprobacionEMAIL(): Promise<void> {
-console.log('')
+
   }
 
   private async sendAprobacionSMS(): Promise<void> {
-console.log()
+
   }
 
   private async sendAprobacionWA(): Promise<void> {
+    const file: Blob | undefined = await this.pdfViewerService.getCurrentDocumentAsBlob();
+
 
   }
 

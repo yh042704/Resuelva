@@ -36,7 +36,7 @@ export const menus: Navigation[] = [
         title: 'Orden de Trabajo',
         type: 'item',
         classes: 'nav-item',
-        link: () => import('../pages/application/pantalla2/pantalla2'),
+        link: () => import('../pages/application/orden-trabajo/orden-trabajo.component'),
         icon: 'pi pi-briefcase',
       },
     ]
