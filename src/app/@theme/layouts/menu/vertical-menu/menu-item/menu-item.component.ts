@@ -22,7 +22,14 @@ export class MenuItemComponent {
   @Input() item!: NavigationItem;
 
   itemClick(event: Event) {
-    this.tabService.tabItemObservable.next({ code: this.item.id, icon: this.item.icon, label: this.item.title, canClose: true, routerLink: this.item.link });
+    this.tabService.tabItemObservable.next(
+      {
+        code: this.item.id,
+        icon: this.item.icon,
+        label: this.item.title,
+        canClose: true,
+        routerLink: this.item.link
+      });
   }
 
   toggleMenu(event: MouseEvent) {

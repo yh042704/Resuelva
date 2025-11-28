@@ -1,0 +1,52 @@
+<app-grid-crud [gridParamCrud]="parametros" [openEditNewTab]="false" [editFormsTemplate]="appEditForms">
+</app-grid-crud>
+
+<ng-template #appEditForms let-selectedRecord>
+  <dx-form id='formEdit' [formData]="selectedRecord" [labelMode]="'static'">
+    <dxi-item itemType="group" [colCount]="3">
+      <dxi-item [label]="{text:'Tipo Usuario'}" dataField="tipoUsuario" editorType="dxSelectBox"
+        [editorOptions]="{ items: tipoUsuarios , valueExpr: 'catalogosId', displayExpr:'descripcion', searchEnabled: true, showClearButton: true}">
+        <dxi-validation-rule type="required" message="Tipo Usuario es requerido"></dxi-validation-rule>
+      </dxi-item>
+
+      <dxi-item [label]="{text:'Correo Electrónico'}" dataField="correoElectronico">
+        <dxi-validation-rule type="required" message="Correo Electrónico es requerido">
+        </dxi-validation-rule>
+        <dxi-validation-rule type="email" message="Ingrese un correo electrónico válido">
+        </dxi-validation-rule>
+        <dxo-editor-options [maxLength]="100"></dxo-editor-options>
+      </dxi-item>
+
+      <dxi-item [label]="{text:'Celular'}" dataField="celular" [editorOptions]="{mask: '(000) 0000-0000',
+          maskRules:phoneRules, maskInvalidMessage:'Incorrecto formato', validationMessagePosition:'left'}">
+        <dxi-validation-rule type="required" message="Celular es requerido">
+        </dxi-validation-rule>
+        <dxo-editor-options [maxLength]="15"></dxo-editor-options>
+      </dxi-item>
+
+      <dxi-item [label]="{text:'Nombre'}" dataField="nombre">
+        <dxi-validation-rule type="required" message="Nombre es requerido">
+        </dxi-validation-rule>
+        <dxo-editor-options [maxLength]="150"></dxo-editor-options>
+      </dxi-item>
+
+      <dxi-item [label]="{text:'Apellidos'}" dataField="apellido">
+        <dxi-validation-rule type="required" message="Apellido es requerido">
+        </dxi-validation-rule>
+        <dxo-editor-options [maxLength]="150"></dxo-editor-options>
+      </dxi-item>
+
+      <dxi-item></dxi-item>
+
+      <dxi-item dataField="password" editorType="dxTextBox"
+        [editorOptions]="{ autocomplete: 'none', maxLength: '32', buttons: buttonPasswordEye, mode: fieldPasswordMode}">
+      </dxi-item>
+
+      <dxi-item dataField="confirmPassword" editorType="dxTextBox"
+        [editorOptions]="{ maxLength: '32', mode: fieldPasswordMode}">
+        <dxi-validation-rule type="compare" [comparisonTarget]="passwordComparison" message="Password no coincide">
+        </dxi-validation-rule>
+      </dxi-item>
+    </dxi-item>
+  </dx-form>
+</ng-template>

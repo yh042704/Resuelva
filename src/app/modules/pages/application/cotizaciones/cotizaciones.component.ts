@@ -275,7 +275,7 @@ export default class CotizacionesComponent implements OnChanges {
       this.selectedRecord = this.selectedCotizacionesPorHojaIngreso[this.primerElemento];
     } else if (event === 'siguiente') {
       this.primerElemento++;
-      if (this.primerElemento >= (this.totalElementos - 1)) {
+      if (this.primerElemento > (this.totalElementos - 1)) {
         this.primerElemento = this.totalElementos - 1;
 
         return;
@@ -320,8 +320,6 @@ export default class CotizacionesComponent implements OnChanges {
   }
 
   private async sendAprobacionWA(): Promise<void> {
-    const file: Blob | undefined = await this.pdfViewerService.getCurrentDocumentAsBlob();
-
 
   }
 

@@ -5,7 +5,6 @@ import { forkJoin } from 'rxjs';
 import { gridParamCrud } from '../../../../../core/interfaces/gridParamCrud';
 import { GeneralService } from '../../../../../core/services/general.service';
 import GridCrudComponent from '../../../../shared/grid-crud/grid-crud.component';
-import dxSelectBox from 'devextreme/ui/select_box';
 
 @Component({
   selector: 'app-orden-trabajo-detalle',

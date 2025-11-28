@@ -52,6 +52,7 @@ export const menus: Navigation[] = [
         title: 'Compras',
         type: 'item',
         classes: 'nav-item',
+        link: () => import('../pages/application/orden-compras/orden-compras.component'),
         icon: 'pi pi-cart-plus'
       },
       {
@@ -59,6 +60,7 @@ export const menus: Navigation[] = [
         title: 'Ventas',
         type: 'item',
         classes: 'nav-item',
+        link: () => import('../pages/application/orden-ventas/orden-ventas.component'),
         icon: 'pi pi-chart-line'
       },
       {
@@ -121,6 +123,7 @@ export const menus: Navigation[] = [
         title: 'Usuarios',
         type: 'item',
         classes: 'nav-item',
+        link: () => import('../pages/application/usuarios/usuarios.component'),
         icon: 'pi pi-users'
       }
     ]
