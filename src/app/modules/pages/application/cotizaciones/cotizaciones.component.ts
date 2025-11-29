@@ -86,7 +86,9 @@ export default class CotizacionesComponent implements OnChanges {
       {
         caption: 'Fecha Doc.',
         dataField: 'fechaDocumento',
-        width: 175
+        dataType: 'date',
+        format: 'dd/MMM/yyyy hh:mm aa',
+        width: 225
       },
       {
         caption: 'Notas',

@@ -23,7 +23,7 @@ export default class OrdenComprasComponent {
   @ViewChild(GridCrudComponent) gridCrudComponent?: GridCrudComponent;
 
   parametros: gridParamCrud = {
-    getUrl: 'Compras',
+    getUrl: 'OrdenCompras',
     key: 'ordenCompraId',
     keyType: 'Int32',
     QuerySelectAll: false,
@@ -46,7 +46,7 @@ export default class OrdenComprasComponent {
       },
       {
         caption: 'Proveedor',
-        dataField: 'ProveedorName',
+        dataField: 'proveedorName',
         width: 300
       },
       {
@@ -56,22 +56,23 @@ export default class OrdenComprasComponent {
         width: 300
       },
       {
-        caption: '# Cot.',
-        dataField: 'documentoNoRef',
-        default: '',
-        width: 300
-      },
-      {
-        caption: 'Fecha Doc.',
-        dataField: 'fechaDocumento',
-        width: 175
-      },
-      {
         caption: 'Estado',
         dataField: 'estadoName',
         width: 100
       },
-
+      {
+        caption: 'Fecha Doc.',
+        dataField: 'fechaDocumento',
+        dataType: 'date',
+        format: 'dd/MMM/yyyy hh:mm aa',
+        width: 225
+      },
+      {
+        caption: '# Cot.',
+        dataField: 'documentoNoRef',
+        default: '',
+        width: 300
+      }
     ],
     onValidateSave: (data: any, isNew: boolean) => true,
     onValidateCancel: (data: any, isNew: boolean): boolean => true,
@@ -87,6 +88,7 @@ export default class OrdenComprasComponent {
         data.estado = this.getEstadoDocumento('INI');
       }
 
+      this.isReadOnly = this.selectedRecord.estado === this.getEstadoDocumento('FIN');
       this.gridCrudComponent?.changeStatusEditButton();
     },
     expands: ['ordenCompraDetalles'],
@@ -99,6 +101,7 @@ export default class OrdenComprasComponent {
   private service = inject(GeneralService);
   private notifications = inject(NotificacionesService);
 
+  isReadOnly: boolean = false;
   isNew: boolean = false;
   selectedRecord: any = null;
   activeIndex: number = 0;
@@ -136,12 +139,12 @@ export default class OrdenComprasComponent {
             return;
           }
 
-          confirm(`¿Está seguro que desea finalizar la orden de compra?`, "Confirmación")
+          confirm(`¿Está seguro que desea procesar la orden de compra?`, "Confirmación")
             .then(dialogResult => {
               if (dialogResult) {
                 this.gridCrudComponent?.showLoadingGrid(true, true);
 
-                this.service.Put(this.parametros.getUrl, 'ordenCompraId', { DocumentoNo: this.selectedRecord.ordenCompraId })
+                this.service.Put(this.parametros.getUrl, 'ProcesarCompra', this.selectedRecord.ordenCompraId)
                   .pipe(take(1))
                   .subscribe(
                     {
@@ -149,6 +152,7 @@ export default class OrdenComprasComponent {
                         this.notifications.showMessage('Orden de compra procesada con exito', 'success');
                         const estado = this.getEstadoDocumento('FIN');
                         this.selectedRecord.estado = estado;
+                        this.isReadOnly = true;
                         this.gridCrudComponent?.showLoadingGrid(false, true);
                       },
                       error: (err) => {
@@ -163,6 +167,10 @@ export default class OrdenComprasComponent {
     ];
 
     this.gridCrudComponent?.processEventEditToolbar(data);
+  }
+
+  validateNumber(e: any) {
+    return e.value > 0;
   }
 
   getEstadoDocumento(etiqueta: string) {

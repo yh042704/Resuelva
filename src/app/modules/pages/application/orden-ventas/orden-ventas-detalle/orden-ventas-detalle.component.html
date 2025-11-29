@@ -1,4 +1,4 @@
 <app-grid-crud #dataGridCrudDetalleEditTable [gridParamCrud]="parametros" [openEditNewTab]="false"
-  [isReadOnly]="readOnlyForm" [(customArrayDatasource)]="surveyDetalleTemplate"
+  [isReadOnly]="readOnlyForm" [(customArrayDatasource)]="surveyDetalleTemplate" (onInitRowGrid)="onInitNewRow($event)"
   style="height: 48dvh !important;display: block;">
 </app-grid-crud>

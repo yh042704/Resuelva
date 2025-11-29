@@ -15,7 +15,7 @@ import GridCrudComponent from '../../../../shared/grid-crud/grid-crud.component'
   styleUrl: './orden-ventas-detalle.component.scss'
 })
 export class OrdenVentasDetalleComponent {
-  @ViewChild('dataGridCrudCotizacionDetalleEditTable') dataGridCrudDetalleEditTable?: GridCrudComponent;
+  @ViewChild('dataGridCrudDetalleEditTable') dataGridCrudDetalleEditTable?: GridCrudComponent;
 
   @Input() ordenVentaId: number = 0;
   @Input() tipoImpuestoId: number = 0;
@@ -125,7 +125,7 @@ export class OrdenVentasDetalleComponent {
         ],
         setCellValue: (newData: any, value: any, currentRowData: any) => {
           newData.cantidad = value;
-          newData.subTotal = (currentRowData.costo * value);
+          newData.subTotal = (currentRowData.precio * value);
         },
         dataType: "number",
         width: 125
@@ -152,6 +152,7 @@ export class OrdenVentasDetalleComponent {
         validationRules: [
           { type: 'required', message: 'El costo  es requerido' }
         ],
+        allowEditing: false,
         width: 125,
       },
       {
@@ -170,7 +171,7 @@ export class OrdenVentasDetalleComponent {
         caption: 'SubTotal',
         dataField: 'subTotal',
         calculateDisplayValue: (rowData: any) => rowData.subTotal ? rowData.subTotal : 0.00,
-        calculateCellValue: (rowData: any) => { rowData.subTotal = (rowData.cantidad * rowData.costo); return rowData.subTotal },
+        calculateCellValue: (rowData: any) => { rowData.subTotal = (rowData.cantidad * rowData.precio); return rowData.subTotal },
         dataType: "number",
         format: "#,##0.##",
         allowEditing: false,
@@ -225,7 +226,7 @@ export class OrdenVentasDetalleComponent {
   }
 
   onInitNewRow(e: any): void {
-    e.data.ordenCompraDetalleId = 0;
+    e.data.ordenVentaDetalleId = 0;
     e.data.ordenVentaId = this.ordenVentaId;
     e.data.tipoImpuesto = this.tipoImpuestoId;
     e.data.subTotal = 0.0;

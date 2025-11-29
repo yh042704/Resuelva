@@ -1,15 +1,21 @@
 export interface User {
-  userid: string;
+  userId: number;
   email: string;
-  userType: string;
   name: string;
-  createdAt: string;
-  exists: boolean;
+  userType: string;
+  phone: string;
+  description: string;
   token: string;
+  message: string;
 }
 
 export interface UserResponse {
-  user: User;
+  userId: number;
+  email: string;
+  name: string;
+  userType: string;
+  phone: string;
+  description: string;
   token: string;
   message: string;
 }

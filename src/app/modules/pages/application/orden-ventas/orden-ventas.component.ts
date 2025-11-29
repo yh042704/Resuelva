@@ -23,7 +23,7 @@ export default class OrdenVentasComponent {
   @ViewChild(GridCrudComponent) gridCrudComponent?: GridCrudComponent;
 
   parametros: gridParamCrud = {
-    getUrl: 'Ventas',
+    getUrl: 'OrdenVentas',
     key: 'ordenVentaId',
     keyType: 'Int32',
     QuerySelectAll: false,
@@ -58,7 +58,9 @@ export default class OrdenVentasComponent {
       {
         caption: 'Fecha Doc.',
         dataField: 'fechaDocumento',
-        width: 175
+        dataType: 'date',
+        format: 'dd/MMM/yyyy hh:mm aa',
+        width: 225
       },
       {
         caption: 'Estado',
@@ -70,7 +72,7 @@ export default class OrdenVentasComponent {
     onValidateSave: (data: any, isNew: boolean) => true,
     onValidateCancel: (data: any, isNew: boolean): boolean => true,
     onBeforeEdit: (data: any, isNew: boolean): void => {
-      data.ordenVentaDetalles ??= [];
+      data.ordenVentaDetalle ??= [];
       this.selectedRecord = data;
       this.isNew = isNew;
 
@@ -80,9 +82,10 @@ export default class OrdenVentasComponent {
         data.estado = this.getEstadoDocumento('INI');
       }
 
+      this.isReadOnly = this.selectedRecord.estado === this.getEstadoDocumento('FIN');
       this.gridCrudComponent?.changeStatusEditButton();
     },
-    expands: ['ordenVentaDetalles'],
+    expands: ['ordenVentaDetalle'],
     createUrl: '/create',
     updateUrl: '/update',
     deleteUrl: '/remove',
@@ -92,6 +95,7 @@ export default class OrdenVentasComponent {
   private service = inject(GeneralService);
   private notifications = inject(NotificacionesService);
 
+  isReadOnly: boolean = false;
   isNew: boolean = false;
   selectedRecord: any = null;
   estadosDocumento?: any[];
@@ -128,24 +132,25 @@ export default class OrdenVentasComponent {
             return;
           }
 
-          confirm(`¿Está seguro que desea finalizar la orden de compra?`, "Confirmación")
+          confirm(`¿Está seguro que desea procesar la orden de venta?`, "Confirmación")
             .then(dialogResult => {
               if (dialogResult) {
                 this.gridCrudComponent?.showLoadingGrid(true, true);
 
-                this.service.Put(this.parametros.getUrl, 'ordenCompraId', { DocumentoNo: this.selectedRecord.ordenCompraId })
+                this.service.Put(this.parametros.getUrl, 'ProcesarVenta', this.selectedRecord.ordenVentaId)
                   .pipe(take(1))
                   .subscribe(
                     {
                       next: (response: any) => {
-                        this.notifications.showMessage('Orden de compra procesada con exito', 'success');
+                        this.notifications.showMessage('Orden de venta procesada con exito', 'success');
                         const estado = this.getEstadoDocumento('FIN');
                         this.selectedRecord.estado = estado;
+                        this.isReadOnly = true;
                         this.gridCrudComponent?.showLoadingGrid(false, true);
                       },
                       error: (err) => {
                         this.gridCrudComponent?.showLoadingGrid(false, true);
-                        this.notifications.showMessage('Ocurrió un error al momento de procesar la orden de compra', 'error');
+                        this.notifications.showMessage('Ocurrió un error al momento de procesar la orden de venta', 'error');
                       }
                     });
               }

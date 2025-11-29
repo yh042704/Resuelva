@@ -3,7 +3,7 @@
 </app-grid-crud>
 
 <ng-template #appEditForms let-selectedRecord>
-  <dx-form id="formEdit" [formData]="selectedRecord" [labelMode]="'static'">
+  <dx-form id="formEdit" [formData]="selectedRecord" [labelMode]="'static'" [readOnly]="isReadOnly">
     <dxi-item itemType="group" [colCount]="4">
       <dxi-item [label]="{text:'Cliente'}" dataField="clientesId" editorType="dxSelectBox" [colSpan]="2"
         [editorOptions]="{ dataSource: dsClientes, showClearButton: true, displayExpr: displayExprTemplate, valueExpr: 'clientesId',
@@ -26,20 +26,19 @@
         </dxi-validation-rule>
       </dxi-item>
 
-      <dxi-item [label]="{text:'Estado'}" dataField="estado" editorType="dxSelectBox"
-        [editorOptions]="{ readOnly: true, items: estadosDocumento , valueExpr: 'catalogosId', displayExpr:'descripcion'}">
+      <dxi-item [label]="{text:'Notas'}" dataField="notas" [colSpan]="2">
       </dxi-item>
 
-      <dxi-item [label]="{text:'Notas'}" dataField="notas" [colSpan]="2">
+      <dxi-item [label]="{text:'Estado'}" dataField="estado" editorType="dxSelectBox"
+        [editorOptions]="{ readOnly: true, items: estadosDocumento , valueExpr: 'catalogosId', displayExpr:'descripcion'}">
       </dxi-item>
     </dxi-item>
     <dxi-item itemType="group" caption="Detalle" [colSpan]="3">
       @if(selectedRecord){
       <dxi-item>
         <div *dxTemplate style="margin-top: -10px !important">
-          <app-orden-ventas-detalle [ordenVentaId]="selectedRecord.ordenVentaId"
-            [tipoImpuestoId]="selectedRecord.tipoImpuesto"
-            [(surveyDetalleTemplate)]="selectedRecord.ordenVentaDetalles">
+          <app-orden-ventas-detalle [ordenVentaId]="selectedRecord.ordenVentaId" [readOnlyForm]="isReadOnly"
+            [tipoImpuestoId]="selectedRecord.tipoImpuesto" [(surveyDetalleTemplate)]="selectedRecord.ordenVentaDetalle">
           </app-orden-ventas-detalle>
         </div>
       </dxi-item>

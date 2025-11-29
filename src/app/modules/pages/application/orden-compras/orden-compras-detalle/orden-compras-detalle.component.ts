@@ -15,7 +15,7 @@ import GridCrudComponent from '../../../../shared/grid-crud/grid-crud.component'
   styleUrl: './orden-compras-detalle.component.scss'
 })
 export class OrdenComprasDetalleComponent {
-  @ViewChild('dataGridCrudCotizacionDetalleEditTable') dataGridCrudDetalleEditTable?: GridCrudComponent;
+  @ViewChild('dataGridCrudDetalleEditTable') dataGridCrudDetalleEditTable?: GridCrudComponent;
 
   @Input() ordenCompraId: number = 0;
   @Input() tipoImpuestoId: number = 0;
@@ -55,7 +55,7 @@ export class OrdenComprasDetalleComponent {
         dataField: 'tipoProducto',
         align: 'left',
         editCellTemplate: (container: any, options: any) => {
-        const selectBoxSampleElement = document.getElementById('selectBoxSample')?.cloneNode(true) as HTMLElement;
+          const selectBoxSampleElement = document.getElementById('selectBoxSample')?.cloneNode(true) as HTMLElement;
           const dxSelec = new dxSelectBox(selectBoxSampleElement, {
             placeholder: 'Seleccione...',
             items: this.tipoProducto,
@@ -94,11 +94,9 @@ export class OrdenComprasDetalleComponent {
             onValueChanged: (e: any) => {
               setTimeout(() => {
                 const selectedItemProduct = e.component.option('selectedItem');
-
                 options.data.descripcionProducto = selectedItemProduct.nombre;
-                options.data.precio = selectedItemProduct.precio;
-                options.data.costo = selectedItemProduct.costo;
                 options.setValue(e.value);
+
                 this.dataGridCrudDetalleEditTable?.dataGrid()?.instance.refresh(true);
               }, 100)
             }
@@ -137,6 +135,10 @@ export class OrdenComprasDetalleComponent {
         validationRules: [
           { type: 'required', message: 'El costo  es requerido' }
         ],
+        setCellValue: (newData: any, value: any, currentRowData: any) => {
+          newData.costo = value;
+          newData.subTotal = (currentRowData.cantidad * value);
+        },
         width: 125,
       },
       {
@@ -188,7 +190,7 @@ export class OrdenComprasDetalleComponent {
 
   tipoImpuesto: any[] = [];
   tipoProducto: any[] = [];
-  dsProductos = this.service.GetDatasourceList('Productos', ['productosId', 'nombre', 'codigo', 'precio', 'costo'], 'nombre', undefined, undefined, true);
+  dsProductos = this.service.GetDatasourceList('Productos', ['productosId', 'nombre', 'codigo'], 'nombre', undefined, undefined, true);
 
   constructor() {
     forkJoin({
@@ -202,7 +204,6 @@ export class OrdenComprasDetalleComponent {
         this.tipoProducto = values.tipoProducto;
 
         const instanceGrid = this.dataGridCrudDetalleEditTable?.dataGrid()?.instance;
-        instanceGrid?.columnOption('tipoProducto').lookup.update();
         instanceGrid?.columnOption('tipoImpuesto').lookup.update();
         instanceGrid?.repaint();
       }
@@ -210,6 +211,7 @@ export class OrdenComprasDetalleComponent {
   }
 
   onInitNewRow(e: any): void {
+    console.log(this.tipoImpuestoId);
     e.data.ordenCompraDetalleId = 0;
     e.data.ordenCompraId = this.ordenCompraId;
     e.data.tipoImpuesto = this.tipoImpuestoId;

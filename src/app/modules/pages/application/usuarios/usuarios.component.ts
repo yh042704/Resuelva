@@ -50,7 +50,7 @@ export default class UsuariosComponent {
       {
         caption: 'Correo',
         dataField: 'correoElectronico',
-        width: 200
+        width: 350
       },
       {
         caption: 'celular',

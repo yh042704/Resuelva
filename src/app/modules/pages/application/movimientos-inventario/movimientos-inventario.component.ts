@@ -45,29 +45,29 @@ export default class MovimientosInventarioComponent {
       {
         caption: 'Producto',
         dataField: 'nombreProducto',
-        width: 400
+        width: 275
       },
       {
         caption: 'Cantidad',
         dataField: 'cantidad',
-        width: 200
+        width: 125
       },
       {
         caption: 'Fecha Mov.',
         dataField: 'fechaMovimiento',
-        width: 175,
+        width: 225,
         dataType: 'date',
         format: 'dd/MMM/yyyy hh:mm aa',
       },
       {
         caption: 'Exis. Anterior',
         dataField: 'existenciaAnterior',
-        width: 200
+        width: 125
       },
       {
         caption: 'Exist. Nueva',
         dataField: 'existenciaNueva',
-        width: 200
+        width: 125
       },
       {
         caption: '# Doc.',

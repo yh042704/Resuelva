@@ -3,7 +3,7 @@
 </app-grid-crud>
 
 <ng-template #appEditForms let-selectedRecord>
-  <dx-form id="formEdit" [formData]="selectedRecord" [labelMode]="'static'">
+  <dx-form id="formEdit" [formData]="selectedRecord" [labelMode]="'static'" [readOnly]="isReadOnly">
     <dxi-item itemType="group" [colCount]="4">
       <dxi-item [label]="{text:'Proveedor'}" dataField="proveedorId" editorType="dxSelectBox" [colSpan]="3"
         [editorOptions]="{ dataSource: dsProveedores, showClearButton: true, displayExpr: displayExprTemplate, valueExpr: 'proveedorId',
@@ -39,7 +39,7 @@
       <dxi-item>
         <div *dxTemplate style="margin-top: -10px !important">
           <app-orden-compras-detalle [ordenCompraId]="selectedRecord.ordenCompraId"
-            [tipoImpuestoId]="selectedRecord.tipoImpuesto"
+            [tipoImpuestoId]="selectedRecord.tipoImpuesto" [readOnlyForm]="isReadOnly"
             [(surveyDetalleTemplate)]="selectedRecord.ordenCompraDetalles">
           </app-orden-compras-detalle>
         </div>
