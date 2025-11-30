@@ -113,7 +113,7 @@ export class GeneralService {
     httpHeaders = body instanceof FormData ? this.httOptionsDefaultGeneric : httpHeaders;
     // Agregar el header de Showspinner dinámicamente
     httpHeaders = httpHeaders.set('Showspinner', showSpinner.toString());
-    let path = controller + "/" + (method != "" ? method + "/" : "");
+    let path = controller + "/" + (method != "" ? method  : "");
     return this.http.post<IResponseWrapperDTO>(this.urlEndpoint + path, body, { params: queryParams, headers: httpHeaders }).pipe(
       take(1),
       map(response => ResposeHandler(response)),
@@ -129,7 +129,7 @@ export class GeneralService {
     // Agregar el header de Showspinner dinámicamente
     httpHeaders = httpHeaders.set('Showspinner', showSpinner.toString());
 
-    let path = controller + "/" + (method != "" ? method + "/" : "");
+    let path = controller + "/" + (method != "" ? method  : "");
     return this.http.put<IResponseWrapperDTO>(this.urlEndpoint + path, body, { params: queryParams, headers: httpHeaders })
       .pipe(take(1),
         map(response => ResposeHandler(response)),
