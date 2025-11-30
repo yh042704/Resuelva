@@ -8,7 +8,7 @@ import { DxButtonModule, DxCheckBoxModule, DxFormModule, DxLoadPanelModule, DxPo
 import _ from 'lodash';
 import { NgxExtendedPdfViewerModule, NgxExtendedPdfViewerService } from 'ngx-extended-pdf-viewer';
 import { ListboxModule } from 'primeng/listbox';
-import { catchError, exhaustMap, forkJoin, Subject, tap } from 'rxjs';
+import { catchError, exhaustMap, firstValueFrom, forkJoin, Subject, take, tap } from 'rxjs';
 import { gridParamCrud } from 'src/app/core/interfaces/gridParamCrud';
 import { GeneralService } from 'src/app/core/services/general.service';
 import { NotificacionesService } from 'src/app/core/services/notificaciones.service';
@@ -126,12 +126,14 @@ export default class CotizacionesComponent implements OnChanges {
       if (this.selectedTipoMensaje) {
         this.loadingVisibleSendCotizacion = true;
         let promise: Promise<void> | null = null;
-        if (this.selectedTipoMensaje.code === 'WA')
+        if (this.selectedTipoMensaje.code === 'WA') {
           promise = this.sendAprobacionWA();
+        }
+
 
         if (promise)
           promise.then(() => this.notifications.showMessage('Cotización enviado con éxito', 'success'))
-            .catch((error: Error) => this.notifications.showMessage(error, 'success'))
+            .catch((error: Error) => this.notifications.showMessage(error, 'error'))
             .finally(() => {
               this.loadingVisibleSendCotizacion = false;
               this.popupVisibleSendCotizacion = false;
@@ -311,6 +313,8 @@ export default class CotizacionesComponent implements OnChanges {
   public sendAprobacion() {
     this.popupVisibleSendCotizacion = true;
     this.selectedTipoMensaje = undefined;
+
+
   }
 
   private async sendAprobacionEMAIL(): Promise<void> {
@@ -322,7 +326,89 @@ export default class CotizacionesComponent implements OnChanges {
   }
 
   private async sendAprobacionWA(): Promise<void> {
+    const responseCatalogo: any[] = await firstValueFrom(this.service.Get('Catalogo', '', new HttpParams({ fromString: "$select=catalogosId,Descripcion,Posicion,valor3&$orderby=Posicion&filter=catalogosId eq 0", })));
+    const [responseJWT] = responseCatalogo;
+    const jwtWhatsapp = responseJWT.valor3;
 
+    const file: Blob | undefined = await this.pdfViewerService.getCurrentDocumentAsBlob();
+
+    const uploadDocument = async (fileBuffer: Blob, filename: string) => {
+      const formData = new FormData();
+      formData.append('file', fileBuffer, filename);
+      formData.append('type', 'document');
+      formData.append('messaging_product', 'whatsapp');
+
+      const response = await fetch(
+        `https://graph.facebook.com/v22.0/921412751051109/media`,
+        {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${jwtWhatsapp}`,
+          },
+          body: formData
+        }
+      );
+
+      return await response.json();
+    };
+
+    const documentData = await uploadDocument(file!, 'documento.pdf');
+    const documentId = documentData.id;
+
+    const bodyWhatsapp = {
+      "messaging_product": "whatsapp",
+      "recipient_type": "individual",
+      "to": "50372761438",
+      "type": "template",
+      "template": {
+        "name": "cotizaciontemplate",
+        "language": {
+          "code": "es"
+        },
+        "components": [
+          {
+            "type": "header",
+            "parameters": [
+              {
+                "type": "document",
+                "document": {
+                  "id": documentId,
+                  "filename": "cotizacion_No_" + this.selectedRecord.documentoNo + ".pdf"
+                }
+              }
+            ]
+          },
+          {
+            "type": "body",
+            "parameters": [
+              {
+                "type": "text",
+                "text": this.selectedRecord.clienteName
+              },
+              {
+                "type": "text",
+                "text": ' No. ' + this.selectedRecord.documentoNo
+              }
+            ]
+          }
+        ]
+      }
+    }
+
+    const response = await fetch(
+      `https://graph.facebook.com/v22.0/921412751051109/messages`,
+      {
+        method: 'POST',
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+          'Authorization': `Bearer ${jwtWhatsapp}`,
+        },
+        body: JSON.stringify(bodyWhatsapp)
+      }
+    );
+
+    if (!response.ok)
+      throw new Error('Ocurrió un error al enviar el mensaje a Whatsapp')
   }
 
   validateNumber(e: any) {
