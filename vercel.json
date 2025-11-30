@@ -1,7 +1,7 @@
 {
   "rewrites": [
     { "source": "/api/:match*", "destination": "https://resuelva.runasp.net/api/:match*" },
-    { "source": "/report*", "destination": "https://pruebas.trazaragro3.oirsa.org/report" }
+    { "source": "/report", "destination": "https://pruebas.trazaragro3.oirsa.org/report" }
   ],
   "headers": [
     {
