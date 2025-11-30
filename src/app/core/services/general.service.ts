@@ -47,7 +47,7 @@ export class GeneralService {
   }
 
   Get<T>(controller: string, action: string, queryParams?: HttpParams): Observable<T> {
-    let path = controller + "/" + (action != "" ? action : "");
+    let path = controller + (action != "" ?  "/" + action : "");
     return this.http.get<IResponseWrapperDTO>(this.urlEndpoint + path, { params: queryParams, headers: this.getHttpOptions() }).pipe(
       take(1),
       map(response => ResposeHandler(response)),
