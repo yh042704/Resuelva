@@ -100,6 +100,7 @@ export const menus: Navigation[] = [
         title: 'Productos',
         type: 'item',
         classes: 'nav-item',
+        link: () => import('../pages/application/productos/productos.component'),
         icon: 'pi pi-qrcode'
       },
       {

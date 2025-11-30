@@ -1,0 +1,53 @@
+<app-grid-crud [gridParamCrud]="parametros" [openEditNewTab]="false" [editFormsTemplate]="appEditForms">
+</app-grid-crud>
+
+<ng-template #appEditForms let-selectedRecord>
+  <dx-form id='formEdit' [formData]="selectedRecord" [labelMode]="'static'">
+    <dxi-item itemType="group" [colCount]="4">
+      <dxi-item [label]="{text:'Código'}" dataField="codigo">
+        <dxi-validation-rule type="required" message="Código de producto es requerido">
+        </dxi-validation-rule>
+        <dxo-editor-options [maxLength]="50"></dxo-editor-options>
+      </dxi-item>
+
+      <dxi-item [label]="{text:'Nombre'}" dataField="nombre">
+        <dxi-validation-rule type="required" message="Nombre es requerido">
+        </dxi-validation-rule>
+        <dxo-editor-options [maxLength]="400"></dxo-editor-options>
+      </dxi-item>
+
+      <dxi-item [label]="{text:'Ubicación'}" dataField="ubicacion" [colSpan]="2">
+         <dxi-validation-rule type="required" message="Ubicación es requerido">
+        </dxi-validation-rule>
+        <dxo-editor-options [maxLength]="100"></dxo-editor-options>
+      </dxi-item>
+
+      <dxi-item [label]="{text:'Tipo Producto'}" dataField="tipoProducto" editorType="dxSelectBox"
+        [editorOptions]="{ items: tipoProducto, valueExpr: 'catalogosId', displayExpr:'descripcion'}">
+        <dxi-validation-rule type="required" message="Tipo Producto es requerido"></dxi-validation-rule>
+      </dxi-item>
+
+      <dxi-item [label]="{text:'Existencia'}" dataField="existencia" editorType="dxNumberBox"
+        [editorOptions]="{ readOnly: true }">
+      </dxi-item>
+
+      <dxi-item [label]="{text:'Existencia Mínima'}" dataField="existenciaMinima" editorType="dxNumberBox"
+        [editorOptions]="{ showSpinButtons: true, min: 0 }">
+      </dxi-item>
+
+      <dxi-item [label]="{text:'Costo'}" dataField="costo" editorType="dxNumberBox"
+        [editorOptions]="{ showSpinButtons: true, min: 0, step: '0.01' }">
+      </dxi-item>
+
+      <dxi-item [label]="{text:'Precio'}" dataField="precio" editorType="dxNumberBox"
+        [editorOptions]="{ showSpinButtons: true, min: 0, step: '0.01' }">
+      </dxi-item>
+
+      <dxi-item dataField="activo" editorType="dxCheckBox"
+      [editorOptions]="{ text: 'Activo' }">
+        <dxo-label [visible]="false"></dxo-label>
+      </dxi-item>
+
+    </dxi-item>
+  </dx-form>
+</ng-template>
