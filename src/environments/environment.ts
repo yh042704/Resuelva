@@ -9,7 +9,7 @@ export const environment = {
   // apiUrl: 'https://localhost:44344/api/',
   // apiUrl: 'https://192.168.1.4:44355/api/',
   // apiReport: 'https://pruebas.trazaragro3.oirsa.org/report',
-  apiUrl: 'api',
+  apiUrl: 'api/',
   apiReport: 'report',
   production: false
 };
